@@ -432,8 +432,8 @@ def add_table(doc, headers: Sequence[str], rows: Sequence[Sequence[str]],
 
 
 def he_bullet(doc, text, *, size=12):
-    he_paragraph(doc, text, style="List Bullet", size=size,
-                 space_before=1, space_after=1)
+    return he_paragraph(doc, "●  " + text, size=size,
+                        space_before=1, space_after=1)
 
 
 def build_document() -> None:
