@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "secure-chess"
+version = "0.1.0"
+description = "Secure two-player chess game with client-server architecture and password encryption."
+requires-python = ">=3.11"
+authors = [{ name = "Alonti" }]
+license = { text = "MIT" }
+dependencies = [
+    "bcrypt>=4.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+secure-chess-server = "secure_chess.server.__main__:main"
+secure-chess-client = "secure_chess.client.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"

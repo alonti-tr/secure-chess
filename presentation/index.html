@@ -1,0 +1,1064 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Secure Chess — מדריך לתלמיד</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" id="theme" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css" />
+
+  <style>
+    :root {
+      --he-font: "Segoe UI", "Heebo", "Arial", sans-serif;
+      --code-font: "Cascadia Code", "Consolas", "Courier New", monospace;
+      --accent: #1f6feb;
+      --accent-soft: #eaf2fd;
+      --dark: #1f2328;
+      --muted: #57606a;
+    }
+
+    html, body {
+      font-family: var(--he-font);
+      color: var(--dark);
+    }
+
+    .reveal {
+      font-family: var(--he-font);
+      font-size: 26px;
+    }
+
+    .reveal .slides {
+      text-align: right;
+    }
+
+    .reveal .slides section {
+      direction: rtl;
+      text-align: right;
+      height: 100%;
+      padding: 24px 36px 16px 36px;
+      box-sizing: border-box;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3 {
+      text-align: right;
+      direction: rtl;
+      color: var(--dark);
+      text-transform: none;
+      letter-spacing: 0;
+      margin: 0 0 0.4em 0;
+      line-height: 1.2;
+    }
+
+    .reveal h1 { font-size: 1.9em; font-weight: 800; }
+    .reveal h2 { font-size: 1.35em; font-weight: 700; color: var(--accent); }
+    .reveal h3 { font-size: 1.05em; font-weight: 700; color: var(--muted); }
+
+    .reveal p, .reveal li {
+      text-align: right;
+      direction: rtl;
+      line-height: 1.45;
+    }
+
+    .reveal ul, .reveal ol {
+      display: block;
+      margin: 0.2em 1.4em 0.4em 0;
+      padding: 0;
+    }
+
+    .reveal ul { list-style-position: inside; }
+    .reveal li { margin: 0.15em 0; }
+
+    .reveal code {
+      font-family: var(--code-font);
+      direction: ltr;
+      unicode-bidi: isolate;
+      background: #f1f3f5;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: #032f62;
+    }
+
+    .reveal pre {
+      direction: ltr;
+      text-align: left;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      border-radius: 8px;
+      overflow: hidden;
+      width: 100%;
+      margin: 12px 0;
+      font-size: 0.62em;
+    }
+
+    .reveal pre code {
+      padding: 14px 16px;
+      direction: ltr;
+      text-align: left;
+      font-family: var(--code-font);
+      line-height: 1.35;
+      background: #272822;
+      color: #f8f8f2;
+      max-height: 480px;
+      overflow: auto;
+    }
+
+    .en {
+      direction: ltr;
+      unicode-bidi: isolate;
+      font-family: var(--code-font);
+      background: #f1f3f5;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.88em;
+      color: #032f62;
+      white-space: nowrap;
+    }
+
+    .title-slide {
+      text-align: center !important;
+    }
+    .title-slide h1, .title-slide h2, .title-slide p {
+      text-align: center;
+    }
+    .title-slide .subtitle {
+      color: var(--muted);
+      font-size: 1.1em;
+      margin-top: 0.5em;
+    }
+    .title-slide .badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 18px;
+      font-weight: 700;
+      margin-top: 14px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      direction: rtl;
+    }
+    .two-col > div {
+      direction: rtl;
+    }
+    .two-col pre {
+      margin-top: 0;
+    }
+
+    .callout {
+      background: var(--accent-soft);
+      border-right: 4px solid var(--accent);
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin: 10px 0;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .callout strong { color: var(--accent); }
+
+    .small { font-size: 0.78em; color: var(--muted); }
+
+    .pill {
+      display: inline-block;
+      background: #e7f5ec;
+      color: #1f7a3e;
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-size: 0.7em;
+      font-weight: 700;
+      margin: 0 4px;
+      vertical-align: middle;
+    }
+
+    .pill.warn {
+      background: #fff4e5;
+      color: #b25a00;
+    }
+
+    .pill.info {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .footnote {
+      position: absolute;
+      bottom: 12px;
+      right: 36px;
+      left: 36px;
+      font-size: 0.6em;
+      color: var(--muted);
+      text-align: right;
+      direction: rtl;
+    }
+
+    table.req {
+      width: 100%;
+      border-collapse: collapse;
+      direction: rtl;
+      font-size: 0.78em;
+    }
+    table.req th, table.req td {
+      border: 1px solid #d0d7de;
+      padding: 6px 10px;
+      text-align: right;
+      vertical-align: top;
+    }
+    table.req th {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    table.req td.en {
+      background: transparent;
+      direction: ltr;
+      text-align: left;
+      font-family: var(--code-font);
+      color: #032f62;
+      padding: 6px 10px;
+      display: table-cell;
+      border-radius: 0;
+    }
+
+    .reveal section img { box-shadow: none; border: none; }
+
+    .reveal .progress { color: var(--accent); }
+    .reveal .controls { color: var(--accent); }
+
+    /* keep slide number readable in RTL — force LTR */
+    .reveal .slide-number {
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    .speaker-tip {
+      background: #fff8e1;
+      border-right: 4px solid #f5a623;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-top: 10px;
+      font-size: 0.78em;
+      direction: rtl;
+      text-align: right;
+    }
+    .speaker-tip::before {
+      content: "טיפ למצגת: ";
+      font-weight: 700;
+      color: #b25a00;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============== 1. TITLE ============== -->
+      <section class="title-slide">
+        <h1>Secure Two-Player Chess</h1>
+        <p class="subtitle">משחק שחמט מאובטח בין שני שחקנים — מערכת לקוח/שרת ב‑Python</p>
+        <div class="badge">מדריך לתלמיד — מצגת לבוחן</div>
+        <p class="small" style="margin-top: 28px;">
+          הגרסה כוללת: אימות עם סיסמאות מוצפנות <span class="en">(bcrypt)</span>,
+          פרוטוקול <span class="en">JSON-Lines</span> מעל <span class="en">TCP</span>,
+          ריבוי משחקים במקביל, ויריב <span class="en">AI (alpha-beta minimax)</span>.
+        </p>
+      </section>
+
+      <!-- ============== 2. AGENDA ============== -->
+      <section>
+        <h2>סדר הצגה לבוחן</h2>
+        <ol>
+          <li>מה הפרויקט עושה — סקירה ב‑30 שניות</li>
+          <li>איך הוא עומד בדרישות המטלה (טבלת כיסוי)</li>
+          <li>ארכיטקטורה — לקוח, שרת, וזרימה כוללת</li>
+          <li>מחלקות ועצמים (≥ 2 — יש 9!)</li>
+          <li>פרוטוקול התקשורת מעל ה‑<span class="en">TCP</span></li>
+          <li>הצפנת סיסמאות — <span class="en">bcrypt</span> בלבד</li>
+          <li>זרימת התחברות והרשמה (<span class="en">register</span> / <span class="en">login</span>)</li>
+          <li>לובי, התאמה (<span class="en">matchmaking</span>) ומשחק חי</li>
+          <li>בונוס: ריבוי משחקים במקביל (<span class="en">threading</span>)</li>
+          <li>בונוס: <span class="en">AI</span> בשיטת <span class="en">alpha-beta minimax</span></li>
+          <li>ממשק המשתמש: <span class="en">Tkinter GUI</span> + <span class="en">CLI</span></li>
+          <li>בדיקות אוטומטיות — <span class="en">pytest</span></li>
+          <li>הדגמה חיה</li>
+        </ol>
+        <div class="speaker-tip">להגיד "עכשיו אעבור איתך שלב אחרי שלב — בכל שלב אראה גם את הקוד".</div>
+      </section>
+
+      <!-- ============== 3. WHAT IS IT ============== -->
+      <section>
+        <h2>מה הפרויקט עושה?</h2>
+        <ul>
+          <li>שני משתמשים נרשמים בשרת מרכזי עם <strong>שם משתמש + סיסמה</strong>.</li>
+          <li>הסיסמאות נשמרות על הדיסק כ‑<strong>בלבד</strong> כ‑<span class="en">hash</span> מאובטח (<span class="en">bcrypt</span>) — לא טקסט גלוי.</li>
+          <li>לאחר התחברות הם נכנסים ל‑<strong>לובי</strong>; השרת מצמיד שני שחקנים זמינים ופותח משחק שחמט.</li>
+          <li>המסירות עוברות במסר <span class="en">JSON</span> אחד בכל שורה מעל חיבור <span class="en">TCP</span>.</li>
+          <li>השרת מנהל את הלוח, בודק חוקיות מהלכים, מזהה שחמט / פט / תיקו ושולח עדכוני מצב.</li>
+          <li><span class="pill">בונוס</span> אפשר לשחק נגד <span class="en">AI</span> מקומי במקום נגד יריב אנושי.</li>
+          <li><span class="pill">בונוס</span> השרת תומך בכמה זוגות שחקנים <strong>במקביל</strong>.</li>
+        </ul>
+      </section>
+
+      <!-- ============== 4. ASSIGNMENT COVERAGE ============== -->
+      <section>
+        <h2>כיסוי דרישות המטלה</h2>
+        <table class="req">
+          <thead>
+            <tr><th>דרישה</th><th>איפה בקוד</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>שתי מחלקות ומעלה עם עצמים ופעולות</td>
+              <td class="en">Piece · Board · Move · Game · Account · UserStore · Session · Lobby · GameRegistry</td>
+            </tr>
+            <tr>
+              <td>מערכת לקוח‑שרת</td>
+              <td class="en">src/secure_chess/server/ + src/secure_chess/client/</td>
+            </tr>
+            <tr>
+              <td>ריבוי לקוחות במקביל <span class="pill">בונוס</span></td>
+              <td class="en">thread per connection + thread-safe Lobby/GameRegistry</td>
+            </tr>
+            <tr>
+              <td>שימוש ב‑<span class="en">AI</span> <span class="pill">בונוס</span></td>
+              <td class="en">common/ai.py — alpha-beta minimax</td>
+            </tr>
+            <tr>
+              <td>הצפנת סיסמאות בלבד (התקשורת לא מוצפנת)</td>
+              <td class="en">common/crypto.py (bcrypt) → data/users.json</td>
+            </tr>
+            <tr>
+              <td>ממשק משתמש</td>
+              <td class="en">client/gui.py (Tkinter) + client/cli.py</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="speaker-tip">לפתוח לבוחן את <span class="en">README.md</span> ולהראות בדיוק את הטבלה הזו ב‑<span class="en">repo</span>.</div>
+      </section>
+
+      <!-- ============== 5. ARCHITECTURE ============== -->
+      <section>
+        <h2>ארכיטקטורה — מבט על</h2>
+        <pre><code class="language-text" data-noescape>
+   +-----------------+         TCP / JSON-Lines         +-----------------+
+   |   Client A      | &lt;------------------------------&gt; |                 |
+   |  (GUI or CLI)   |                                  |                 |
+   +-----------------+                                  |                 |
+                                                        |   ChessServer   |
+   +-----------------+         TCP / JSON-Lines         |  (accept loop)  |
+   |   Client B      | &lt;------------------------------&gt; |                 |
+   |  (GUI or CLI)   |                                  |                 |
+   +-----------------+                                  +--------+--------+
+                                                                 |
+                                                  +--------------+--------------+
+                                                  |              |              |
+                                              UserStore       Lobby        GameRegistry
+                                            (users.json,    (queue of    (active Games,
+                                              bcrypt)       waiting     one per match)
+                                                           sessions)
+        </code></pre>
+        <ul>
+          <li>כל חיבור = <span class="en">Session</span> אחד בתוך <span class="en">thread</span> דדיקטיבי.</li>
+          <li>שלוש "מאגרים" משותפים: משתמשים (דיסק), לובי (תור בזיכרון), משחקים פעילים.</li>
+          <li>השרת לעולם <strong>לא</strong> שולח את הסיסמאות חזרה ללקוח, ולא שומר אותן בטקסט.</li>
+        </ul>
+      </section>
+
+      <!-- ============== 6. PROJECT LAYOUT ============== -->
+      <section>
+        <h2>מבנה התיקיות</h2>
+        <pre><code class="language-text" data-noescape>
+secure-chess/
+├── pyproject.toml          # dependencies (bcrypt, pytest)
+├── README.md
+├── src/secure_chess/
+│   ├── common/             # pure logic - no network, no I/O
+│   │   ├── pieces.py       # Color, PieceType, Piece + pseudo-legal moves
+│   │   ├── board.py        # Board + full legality, mate / stale / draws
+│   │   ├── move.py         # Square + Move + UCI parsing
+│   │   ├── game.py         # Game + Result
+│   │   ├── crypto.py       # bcrypt wrappers
+│   │   ├── user_store.py   # Account + JSON-backed UserStore
+│   │   ├── protocol.py     # JSON-Lines framing
+│   │   ├── ai.py           # alpha-beta minimax            BONUS
+│   │   └── errors.py       # exception hierarchy
+│   ├── server/             # network layer
+│   │   ├── server.py       # ChessServer + accept loop
+│   │   ├── session.py      # Session, SessionState, AISession
+│   │   └── lobby.py        # Lobby + GameRegistry
+│   └── client/
+│       ├── gui.py          # Tkinter GUI front-end
+│       └── cli.py          # text-mode REPL
+└── tests/
+    ├── unit/               # unit tests
+    └── integration/        # end-to-end tests over real TCP
+        </code></pre>
+        <div class="speaker-tip">להגיד: "הקפדתי על הפרדה — <span class="en">common</span> זה לוגיקה בלי <span class="en">I/O</span>, אז קל לבדוק אותה".</div>
+      </section>
+
+      <!-- ============== 7. CLASSES OVERVIEW ============== -->
+      <section>
+        <h2>9 מחלקות עיקריות (הדרישה: ≥ 2)</h2>
+        <table class="req">
+          <thead><tr><th>מחלקה</th><th>תפקיד</th></tr></thead>
+          <tbody>
+            <tr><td class="en">Piece</td><td>כלי שחמט (צבע + סוג) + הולכת תנועות פסאודו-חוקיות</td></tr>
+            <tr><td class="en">Board</td><td>הלוח 8x8 + חוקיות מלאה + זיהוי שחמט/פט/תיקו</td></tr>
+            <tr><td class="en">Move</td><td>מהלך (ממ-עד-הכתרה) + פירוק <span class="en">UCI</span></td></tr>
+            <tr><td class="en">Game</td><td>משחק חי בין שני שחקנים — מחזיק לוח + תוצאה</td></tr>
+            <tr><td class="en">Account</td><td>שורת משתמש: שם + <span class="en">password_hash</span> + תאריך</td></tr>
+            <tr><td class="en">UserStore</td><td>אחסון משתמשים ב‑<span class="en">JSON</span> עם נעילת <span class="en">thread</span></td></tr>
+            <tr><td class="en">Session</td><td>חיבור לקוח אחד בשרת + מכונת מצבים</td></tr>
+            <tr><td class="en">Lobby</td><td>תור המתנה — מצמיד שני שחקנים</td></tr>
+            <tr><td class="en">GameRegistry</td><td>מאגר משחקים פעילים + שידור מצב</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ============== 8. PROTOCOL ============== -->
+      <section>
+        <h2>פרוטוקול ה‑<span class="en">JSON-Lines</span></h2>
+        <p>אובייקט <span class="en">JSON</span> אחד בכל שורה, מסתיים ב‑<span class="en">\n</span>, מעל <span class="en">TCP</span> רגיל (ללא הצפנה — לפי דרישת המטלה).</p>
+        <pre><code class="language-text" data-noescape>
+C -> S  {"type":"register","username":"alice","password":"hunter2!"}
+S -> C  {"type":"ok"}
+C -> S  {"type":"play_human"}
+S -> C  {"type":"ok"}
+S -> C  {"type":"game_started","you_are":"white","opponent":"bob", ...}
+C -> S  {"type":"move","uci":"e2e4"}
+S -> C  {"type":"ok"}
+S -> C  {"type":"game_state", ...}
+...
+S -> C  {"type":"game_ended","result":"white_wins","reason":"checkmate"}
+        </code></pre>
+        <div class="callout">
+          <strong>למה <span class="en">JSON-Lines</span>?</strong> כי <span class="en">TCP</span> הוא זרם בייטים בלי גבולות הודעה.
+          סיום שורה ב‑<span class="en">\n</span> נותן לנו <em>framing</em> פשוט שאפשר לקרוא ולפענח בלי שום ספרייה מיוחדת.
+        </div>
+      </section>
+
+      <!-- ============== 9. PROTOCOL CODE ============== -->
+      <section>
+        <h2>קוד הפרוטוקול — <span class="en">protocol.py</span></h2>
+        <pre><code class="language-python" data-noescape>
+def send_message(sock: socket.socket, msg: Dict[str, Any]) -> None:
+    line = (json.dumps(msg, separators=(",", ":")) + "\n").encode("utf-8")
+    try:
+        sock.sendall(line)
+    except OSError as exc:
+        raise ConnectionClosed(str(exc)) from exc
+
+
+class _LineReader:
+    """Reads from the socket and buffers until a \n is seen.
+    Yields exactly one JSON line per read_line() call."""
+    def __init__(self, sock: socket.socket) -> None:
+        self._sock = sock
+        self._buf = bytearray()
+
+    def read_line(self) -> bytes:
+        while b"\n" not in self._buf:
+            chunk = self._sock.recv(4096)
+            if not chunk:
+                raise ConnectionClosed("peer closed the connection")
+            self._buf.extend(chunk)
+        idx = self._buf.index(b"\n")
+        line = bytes(self._buf[:idx])
+        del self._buf[: idx + 1]
+        return line
+        </code></pre>
+        <p class="small">
+          מה להגיד לבוחן: "השרת והלקוח שניהם משתמשים ב‑<span class="en">_LineReader</span>, אז אותה לוגיקת
+          <span class="en">framing</span> רצה בשני הצדדים — וזה אומר שאין שום סיכוי לתקרים של חצי-הודעה".
+        </p>
+      </section>
+
+      <!-- ============== 10. PASSWORD ENCRYPTION ============== -->
+      <section>
+        <h2>הצפנת סיסמאות — <span class="en">bcrypt</span></h2>
+        <p>הדרישה הייתה: <strong>רק הסיסמאות מוצפנות</strong>, לא התקשורת. השתמשתי ב‑<span class="en">bcrypt</span> — סטנדרט תעשייתי שמכיל <span class="en">salt</span> אוטומטי בתוך ה‑<span class="en">hash</span>.</p>
+        <pre><code class="language-python" data-noescape>
+# common/crypto.py
+import bcrypt
+
+
+def hash_password(plain: str) -> str:
+    if not isinstance(plain, str):
+        raise TypeError("password must be a string")
+    return bcrypt.hashpw(plain.encode("utf-8"), bcrypt.gensalt()).decode("ascii")
+
+
+def verify_password(plain: str, hashed: str) -> bool:
+    if not isinstance(plain, str) or not isinstance(hashed, str):
+        return False
+    try:
+        return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("ascii"))
+    except (ValueError, TypeError):
+        return False
+        </code></pre>
+        <div class="callout">
+          <strong>למה <span class="en">bcrypt</span> ולא <span class="en">SHA-256</span>?</strong>
+          כי <span class="en">bcrypt</span> איטי בכוונה (<span class="en">cost factor</span>) — תקיפת
+          <span class="en">brute-force</span> הופכת לבלתי מעשית, גם אם הקובץ דלף.
+        </div>
+      </section>
+
+      <!-- ============== 11. USER STORE ============== -->
+      <section>
+        <h2>שמירה לדיסק — <span class="en">UserStore</span></h2>
+        <pre><code class="language-python" data-noescape>
+class UserStore:
+    def __init__(self, path: str | Path) -> None:
+        self.path = Path(path)
+        self._lock = threading.Lock()
+        self._accounts: Dict[str, Account] = {}
+        self._load()
+
+    def register(self, username: str, password: str) -> Account:
+        _validate_username(username)        # 3-32 chars [A-Za-z0-9_-]
+        _validate_password(password)        # min 8 characters
+        hashed = hash_password(password)    # bcrypt one-way hash
+        with self._lock:
+            if username in self._accounts:
+                raise DuplicateUserError(...)
+            account = Account(username, hashed, _now_utc())
+            self._accounts[username] = account
+            self._persist_locked()          # write-tmp + os.replace = atomic
+            return account
+
+    def authenticate(self, username, password) -> Optional[Account]:
+        with self._lock:
+            account = self._accounts.get(username)
+        if account is None:
+            return None
+        return account if verify_password(password, account.password_hash) else None
+        </code></pre>
+        <p class="small">שלוש נקודות חשובות: ולידציה, <span class="en">thread-safe lock</span>, וכתיבה אטומית לקובץ.</p>
+      </section>
+
+      <!-- ============== 12. PROOF NO PLAINTEXT ============== -->
+      <section>
+        <h2>הוכחה שאין סיסמה גלויה בדיסק</h2>
+        <p>אחרי שמשתמש נרשם — אפשר לפתוח את <span class="en">data/users.json</span> ולוודא שאין שם טקסט גלוי:</p>
+        <pre><code class="language-json" data-noescape>
+{
+  "alice": {
+    "password_hash": "$2b$12$KIXr5w9.2T0e1m9k3rN6qO...",
+    "created_at": "2026-05-14T13:01:22Z"
+  }
+}
+        </code></pre>
+        <pre><code class="language-powershell" data-noescape>
+# מציג רק hashes — ללא סיסמאות
+Get-Content .\data\users.json
+
+# חיפוש הסיסמה הגולמית — לא צריך להחזיר כלום
+Select-String -Path .\data\users.json -Pattern "hunter2!|s3cretpw"
+# expected: no matches
+        </code></pre>
+        <div class="speaker-tip">להריץ את הפקודות האלה בעיניים של הבוחן — הוכחה ויזואלית מנצחת.</div>
+      </section>
+
+      <!-- ============== 13. SERVER ACCEPT LOOP ============== -->
+      <section>
+        <h2>השרת — לולאת קבלת חיבורים</h2>
+        <pre><code class="language-python" data-noescape>
+class ChessServer:
+    def start(self) -> tuple[str, int]:
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self._sock.bind((self.host, self.port))
+        self._sock.listen(self.max_clients)
+        # background accept thread so start() returns immediately
+        self._accept_thread = threading.Thread(target=self._accept_loop, daemon=True)
+        self._accept_thread.start()
+        return self.bound_address
+
+    def _accept_loop(self) -> None:
+        while not self._stop_event.is_set():
+            client_sock, peer = self._sock.accept()
+            # one Session per client, each on its own thread
+            session = Session(client_sock, peer, self.user_store,
+                              self.lobby, self.registry, ...)
+            with self._sessions_lock:
+                self._sessions.append(session)
+            threading.Thread(target=session.run, daemon=True,
+                             name=f"sess-{session.id[:6]}").start()
+        </code></pre>
+        <div class="callout">
+          <strong>הבונוס של ריבוי לקוחות:</strong> כל חיבור הוא <span class="en">thread</span> נפרד.
+          המאגרים המשותפים <span class="en">(UserStore, Lobby, GameRegistry)</span>
+          כולם מוגנים ב‑<span class="en">threading.Lock</span>.
+        </div>
+      </section>
+
+      <!-- ============== 14. SESSION STATE MACHINE ============== -->
+      <section>
+        <h2><span class="en">Session</span> — מכונת מצבים</h2>
+        <pre><code class="language-text" data-noescape>
+   ┌──────────────┐  register/login   ┌────────────────┐
+   │  ANONYMOUS   │  ───────────────► │ AUTHENTICATED  │
+   └──────────────┘                   └───────┬────────┘
+                                              │ play_human
+                                              ▼
+                                       ┌────────────┐
+                                       │  IN_LOBBY  │ ── 2 שחקנים
+                                       └─────┬──────┘    ─────────┐
+                                             │ cancel_lobby      │
+                                             ▼                   ▼
+                                      AUTHENTICATED           IN_GAME
+                                                          ┌──────────┐
+                                                          │ submit   │
+                                                          │ moves... │
+                                                          └─────┬────┘
+                                                                │ checkmate /
+                                                                │ resign / quit
+                                                                ▼
+                                                         AUTHENTICATED
+        </code></pre>
+        <p class="small">
+          לכל הודעה נכנסת השרת בודק <strong>גם סוג</strong> וגם <strong>מצב</strong> — אם לא תקין,
+          נזרק <span class="en">BadStateError</span> והלקוח מקבל הודעת <span class="en">error</span> מסודרת.
+        </p>
+      </section>
+
+      <!-- ============== 15. DISPATCH LOOP ============== -->
+      <section>
+        <h2>לולאת השליחה של <span class="en">Session</span></h2>
+        <pre><code class="language-python" data-noescape>
+def run(self) -> None:
+    log.info("[%s] connected from %s:%d", self.id[:8], *self.peer)
+    try:
+        while not self._closed:
+            try:
+                msg = protocol.recv_message(self._reader)
+            except ConnectionClosed:
+                break
+            except ProtocolError as exc:
+                self.send(protocol.error(exc.code, str(exc)))
+                continue
+            try:
+                self._dispatch(msg)
+            except SecureChessError as exc:
+                # any domain error -> structured wire-protocol 'error' message
+                self.send(protocol.error(exc.code, str(exc)))
+    finally:
+        self._on_disconnect()
+        self.close()
+
+def _dispatch(self, msg):
+    kind = msg["type"]                        # 'register' / 'login' / 'move' ...
+    handler = getattr(self, f"handle_{kind}", None)
+    if handler is None:
+        raise BadStateError(f"command {kind!r} not legal")
+    handler(msg)
+        </code></pre>
+        <p class="small">דפוס: <strong>הודעה → <span class="en">handler</span> → <span class="en">ok</span> או <span class="en">error</span></strong>. אחיד, נקי, בדיק.</p>
+      </section>
+
+      <!-- ============== 16. LOBBY ============== -->
+      <section>
+        <h2>הלובי — איך מצמידים שני שחקנים</h2>
+        <pre><code class="language-python" data-noescape>
+class Lobby:
+    def __init__(self) -> None:
+        self._queue: List["Session"] = []
+        self._lock = threading.Lock()
+
+    def enqueue(self, session: "Session") -> Optional[Tuple["Session", "Session"]]:
+        with self._lock:
+            self._queue.append(session)
+            if len(self._queue) >= 2:
+                white = self._queue.pop(0)   # FIFO - longest-waiting first
+                black = self._queue.pop(0)
+                return white, black
+        return None
+        </code></pre>
+        <ul>
+          <li>תור פשוט בזיכרון, מוגן ב‑<span class="en">Lock</span> כי הוא נגיש מ‑<span class="en">threads</span> מרובים.</li>
+          <li>שני שחקנים = השרת קורא ל‑<span class="en">GameRegistry.create(white, black)</span> שמשגר <span class="en">game_started</span> לשניהם.</li>
+          <li>שחקן שמבטל המתנה (<span class="en">cancel_lobby</span>) — מוסרים אותו דרך <span class="en">Lobby.remove</span>.</li>
+        </ul>
+      </section>
+
+      <!-- ============== 17. GAME REGISTRY ============== -->
+      <section>
+        <h2><span class="en">GameRegistry</span> — שידור מצב המשחק</h2>
+        <pre><code class="language-python" data-noescape>
+def broadcast_state(self, game: Game, last_move: str) -> None:
+    msg = {
+        "type": "game_state",
+        "game_id": game.id,
+        "last_move": last_move,
+        "board": game.board.to_fen_short(),
+        "to_move": "white" if game.board.side_to_move is Color.WHITE else "black",
+        "in_check": game.board.is_in_check(game.board.side_to_move),
+    }
+    game.white.send(msg)
+    game.black.send(msg)
+        </code></pre>
+        <p>אחרי כל מהלך מוצלח, <strong>שני</strong> השחקנים מקבלים אותה הודעת <span class="en">game_state</span> עם מצב הלוח ב‑<span class="en">FEN</span>.</p>
+        <div class="callout">
+          <strong>למה <span class="en">FEN</span>?</strong> כי זה ייצוג סטנדרטי, קומפקטי, של מצב הלוח —
+          הלקוח <span class="en">(GUI / CLI)</span> מצייר ממנו לוח גרפי או טקסטואלי.
+        </div>
+      </section>
+
+      <!-- ============== 18. MOVE FLOW ============== -->
+      <section>
+        <h2>זרימת מהלך — מקצה לקצה</h2>
+        <pre><code class="language-python" data-noescape>
+# Session.handle_move  (server-side)
+def handle_move(self, msg):
+    if self.state is not SessionState.IN_GAME:
+        raise BadStateError("no active game")
+    move = Move.parse(msg["uci"])            # "e2e4" -> Move object
+    game = self.current_game
+    game.submit_move(self, move)             # 1) Game: check it is your turn
+                                             # 2) Board: full legality check
+                                             # 3) Board: apply + detect mate/stale/draw
+    self.send(protocol.ok())
+    if game.result is None:
+        self.registry.broadcast_state(game, last_move=msg["uci"])
+        next_session = game.current_session()
+        if isinstance(next_session, AISession):
+            self.registry.drive_ai(next_session)   # AI's turn? make it play now
+    else:
+        self.registry.end(game)              # send 'game_ended' to both sides
+        </code></pre>
+        <p class="small">
+          שימו לב: <strong>הלקוח לא מאמת חוקיות בעצמו</strong>. השרת הוא ה‑<span class="en">source of truth</span>.
+          כך לקוח זדוני לא יכול "לרמות".
+        </p>
+      </section>
+
+      <!-- ============== 19. GAME RULES ============== -->
+      <section>
+        <h2>חוקיות מהלכים — <span class="en">Game.submit_move</span></h2>
+        <pre><code class="language-python" data-noescape>
+def submit_move(self, session, move: Move) -> Move:
+    if self.result is not None:
+        raise IllegalMoveError("game has already ended")
+    mover_color = self.color_of(session)
+    if mover_color is None:
+        raise NotYourTurnError("session is not a participant")
+    if mover_color is not self.board.side_to_move:
+        raise NotYourTurnError("it is not your turn")
+
+    resolved = self.board.apply(move)   # single source of truth for legality
+    self.last_move_uci = resolved.to_uci()
+
+    if self.board.is_checkmate():
+        self.result = (Result.white_wins("checkmate") if mover_color is Color.WHITE
+                       else Result.black_wins("checkmate"))
+    elif self.board.is_stalemate():
+        self.result = Result.draw("stalemate")
+    elif self.board.is_threefold_repetition():
+        self.result = Result.draw("threefold")
+    elif self.board.is_fifty_move_draw():
+        self.result = Result.draw("fifty-move")
+    return resolved
+        </code></pre>
+        <p class="small">חוקי השחמט עצמם נמצאים במחלקה <span class="en">Board</span> (<span class="en">~315 lines</span>) — תנועות פסאודו, סינון לפי שח, רוקדה, <span class="en">en-passant</span>, הכתרה.</p>
+      </section>
+
+      <!-- ============== 20. AI BONUS ============== -->
+      <section>
+        <h2>בונוס: יריב <span class="en">AI</span> — <span class="en">alpha-beta minimax</span></h2>
+        <pre><code class="language-python" data-noescape>
+class AIPlayer:
+    def choose_move(self, board: Board, depth: int = 3) -> Move:
+        side = board.side_to_move
+        legal = board.legal_moves(side)
+        best_score, best_moves = None, []
+        alpha, beta = -math.inf, math.inf
+        for move in legal:
+            snap = board._snapshot()
+            try:
+                board._apply_unchecked(move)
+                score = -self._negamax(board, depth - 1, -beta, -alpha,
+                                       perspective=side.opposite())
+            finally:
+                board._restore(snap)
+            if best_score is None or score > best_score:
+                best_score, best_moves = score, [move]
+            elif score == best_score:
+                best_moves.append(move)
+            if score > alpha:
+                alpha = score
+        return random.choice(best_moves)   # random tie-break between equal moves
+        </code></pre>
+        <div class="callout">
+          <strong>negamax + alpha-beta:</strong> אותה פונקציה מנקודת מבט של הצד הנוכחי, עם גזירה (<span class="en">pruning</span>)
+          כשמוצאים תוצאה שמשתחררת. עומק ברירת מחדל = 3.
+        </div>
+      </section>
+
+      <!-- ============== 21. AI EVAL ============== -->
+      <section>
+        <h2>הערכת מצב — <span class="en">material balance</span></h2>
+        <pre><code class="language-python" data-noescape>
+PIECE_VALUE = {
+    PieceType.PAWN:   100,
+    PieceType.KNIGHT: 300,
+    PieceType.BISHOP: 300,
+    PieceType.ROOK:   500,
+    PieceType.QUEEN:  900,
+    PieceType.KING:   0,        # no value - mate is handled via CHECKMATE_SCORE
+}
+CHECKMATE_SCORE = 1_000_000
+
+def evaluate(board: Board) -> int:
+    """Material balance from White's perspective, in centipawns."""
+    score = 0
+    for f in range(8):
+        for r in range(8):
+            p = board.squares[f][r]
+            if p is None:
+                continue
+            val = PIECE_VALUE[p.kind]
+            score += val if p.color is Color.WHITE else -val
+    return score
+        </code></pre>
+        <p class="small">פונקציית הערכה פשוטה אבל אפקטיבית — מספיק כדי לנצח שחקן מתחיל. הדרישה היא <em>שימוש</em> ב‑<span class="en">AI</span>, לא מנוע ברמת <span class="en">Stockfish</span>.</p>
+      </section>
+
+      <!-- ============== 22. AI INTEGRATION ============== -->
+      <section>
+        <h2>איך ה‑<span class="en">AI</span> משתלב בפרוטוקול?</h2>
+        <pre><code class="language-python" data-noescape>
+# Session.handle_play_ai
+def handle_play_ai(self, msg):
+    if self.state is not SessionState.AUTHENTICATED:
+        raise BadStateError(...)
+    requested_color = msg.get("color", "white")
+    depth = max(1, min(4, int(msg.get("depth", self.ai_depth))))
+
+    ai_session = AISession(depth=depth, registry=self.registry)
+    if requested_color == "white":
+        white, black = self, ai_session
+    else:
+        white, black = ai_session, self
+    self.registry.create(white, black)
+    if isinstance(white, AISession):
+        self.registry.drive_ai(white)        # AI opens if it plays White
+        </code></pre>
+        <p>
+          <strong>טריק יפה:</strong> <span class="en">AISession</span> מממש את אותו <em>חוזה</em> כמו
+          <span class="en">Session</span> אמיתי (<span class="en">.send</span>, <span class="en">.account</span>, <span class="en">.current_game</span>).
+          לכן <span class="en">Game</span> ו‑<span class="en">GameRegistry</span> בכלל לא יודעים שזה לא בן-אדם.
+        </p>
+        <div class="callout"><strong>שימוש בעיקרון <span class="en">Liskov</span>:</strong> בני אדם ו‑<span class="en">AI</span> משחקים דרך אותו ממשק.</div>
+      </section>
+
+      <!-- ============== 23. PARALLEL GAMES ============== -->
+      <section>
+        <h2>בונוס: ריבוי משחקים במקביל</h2>
+        <ul>
+          <li>כל <span class="en">Session</span> רץ ב‑<span class="en">thread</span> משלו → אין חסימה בין לקוחות.</li>
+          <li><span class="en">UserStore, Lobby, GameRegistry</span> — כולם נעולים ב‑<span class="en">threading.Lock</span>.</li>
+          <li>הלובי מצמיד שני שחקנים זמינים → כל זוג מקבל <span class="en">Game</span> משל עצמו ב‑<span class="en">GameRegistry</span>.</li>
+          <li>שחקנים זוגות אחרים מקבלים <span class="en">game_state</span> רק על המשחק שלהם.</li>
+        </ul>
+        <pre><code class="language-python" data-noescape>
+# lobby.py - locked under multi-thread access
+class GameRegistry:
+    def __init__(self) -> None:
+        self._games: Dict[str, Game] = {}
+        self._lock = threading.Lock()
+
+    def create(self, white, black) -> Game:
+        game = Game(white=white, black=black)
+        with self._lock:
+            self._games[game.id] = game   # atomic wrt other threads
+        ...
+        </code></pre>
+        <p class="small">קיים <span class="en">integration test</span> מלא: <span class="en">tests/integration/test_parallel_games.py</span>.</p>
+      </section>
+
+      <!-- ============== 24. CLIENT GUI ============== -->
+      <section>
+        <h2>ממשק המשתמש — <span class="en">Tkinter GUI</span></h2>
+        <ul>
+          <li>שלושה מסכים בתוך אותו חלון: <strong>Login → Lobby → Game</strong>.</li>
+          <li>לוח 8×8 מצויר על <span class="en">Canvas</span> עם סמלי <span class="en">Unicode</span> של כלי שחמט (<span class="en">♔♕♖♗♘♙</span>).</li>
+          <li>קליק על הכלי שלי + קליק על משבצת יעד → שולח <span class="en">{"type":"move","uci":"e2e4"}</span>.</li>
+          <li><span class="en">Threading</span> בלקוח: <strong>thread רקע</strong> שקורא מהשרת ודוחף ל‑<span class="en">queue.Queue</span>; ה‑<span class="en">main loop</span> של <span class="en">Tk</span> דוגם אותה כל <span class="en">50ms</span>.</li>
+        </ul>
+        <pre><code class="language-python" data-noescape>
+# gui.py - screen-switching pattern
+def _show_screen(self, name: str) -> None:
+    for widget in self._content.winfo_children():
+        widget.destroy()
+    builder = {
+        "login": self._build_login,
+        "lobby": self._build_lobby,
+        "game":  self._build_game,
+    }[name]
+    builder(self._content)
+        </code></pre>
+        <p class="small">דרישת המטלה הייתה <em>ממשק משתמש</em>. <span class="en">Tkinter</span> נכלל ב‑<span class="en">Python</span> סטנדרטי, אז אין תלות חיצונית.</p>
+      </section>
+
+      <!-- ============== 25. CLIENT CLI ============== -->
+      <section>
+        <h2>ממשק חלופי — <span class="en">CLI</span> (טקסט)</h2>
+        <pre><code class="language-text" data-noescape>
+$ python -m secure_chess.client --host 127.0.0.1 --port 5050 --cli
+connected to 127.0.0.1:5050
+> register alice hunter2!
+ok
+> play_human
+ok
+
+== game started ==
+you are: white   opponent: bob   to move: white
+8 r n b q k b n r
+7 p p p p p p p p
+6 . . . . . . . .
+5 . . . . . . . .
+4 . . . . . . . .
+3 . . . . . . . .
+2 P P P P P P P P
+1 R N B Q K B N R
+  a b c d e f g h
+> move e2e4
+ok
+        </code></pre>
+        <ul>
+          <li>אותו פרוטוקול בדיוק כמו ה‑<span class="en">GUI</span> → <span class="en">GUI</span> יכול לשחק נגד <span class="en">CLI</span>.</li>
+          <li><span class="en">thread</span> נפרד קורא הודעות שרת בזמן שהמשתמש מקליד.</li>
+        </ul>
+      </section>
+
+      <!-- ============== 26. ERRORS ============== -->
+      <section>
+        <h2>היררכיית שגיאות — <span class="en">errors.py</span></h2>
+        <pre><code class="language-python" data-noescape>
+class SecureChessError(Exception):
+    code: str = "internal_error"
+
+class MoveParseError(SecureChessError):        code = "move_parse_error"
+class IllegalMoveError(SecureChessError):      code = "illegal_move"
+class NotYourTurnError(SecureChessError):      code = "not_your_turn"
+class ProtocolError(SecureChessError):         code = "bad_request"
+class DuplicateUserError(SecureChessError):    code = "duplicate_user"
+class WeakPasswordError(SecureChessError):     code = "weak_password"
+class AuthenticationError(SecureChessError):   code = "auth_failed"
+class AlreadyLoggedInError(SecureChessError):  code = "already_logged_in"
+class ValidationError(SecureChessError):       code = "validation"
+class BadStateError(SecureChessError):         code = "bad_state"
+class ServerFullError(SecureChessError):       code = "server_full"
+        </code></pre>
+        <div class="callout">
+          כל שגיאה יודעת מה ה‑<span class="en">code</span> שלה. ה‑<span class="en">dispatcher</span> תופס
+          <span class="en">SecureChessError</span> אחד וממיר אותה אוטומטית להודעת <span class="en">error</span> בפרוטוקול:
+          <span class="en">{"type":"error","code":"auth_failed","message":"..."}</span>.
+        </div>
+      </section>
+
+      <!-- ============== 27. TESTING ============== -->
+      <section>
+        <h2>בדיקות — <span class="en">pytest</span></h2>
+        <div class="two-col">
+          <div>
+            <h3>בדיקות יחידה</h3>
+            <ul>
+              <li><span class="en">test_crypto.py</span> — <span class="en">bcrypt hash/verify</span></li>
+              <li><span class="en">test_user_store.py</span> — רישום / כפילות / סיסמה חלשה</li>
+              <li><span class="en">test_pieces.py</span> — תנועות לכל סוג כלי</li>
+              <li><span class="en">test_board_rules.py</span> — שחמט / פט / רוקדה</li>
+              <li><span class="en">test_ai.py</span> — בחירת מהלך, גזירה</li>
+              <li><span class="en">test_protocol_auth.py</span> / <span class="en">test_protocol_game.py</span></li>
+              <li><span class="en">test_client_gui.py</span> — לוגיקת ה‑<span class="en">FEN</span> ב‑<span class="en">GUI</span></li>
+            </ul>
+          </div>
+          <div>
+            <h3>בדיקות אינטגרציה</h3>
+            <ul>
+              <li><span class="en">test_register_login.py</span></li>
+              <li><span class="en">test_full_game.py</span> — שני לקוחות, מהלכים, סיום</li>
+              <li><span class="en">test_parallel_games.py</span> — <strong>בונוס</strong></li>
+              <li><span class="en">test_play_ai.py</span> — <strong>בונוס</strong></li>
+              <li><span class="en">test_cancel_lobby.py</span></li>
+            </ul>
+          </div>
+        </div>
+        <pre><code class="language-powershell" data-noescape>
+pytest -v
+# expected: 60+ tests pass in &lt; 60 seconds
+        </code></pre>
+      </section>
+
+      <!-- ============== 28. LIVE DEMO ============== -->
+      <section>
+        <h2>הדגמה חיה — סדר הצעדים</h2>
+        <ol>
+          <li><strong>טרמינל 1 — שרת:</strong>
+            <pre><code class="language-powershell" data-noescape>cd secure-chess
+.\.venv\Scripts\Activate.ps1
+python -m secure_chess.server --host 127.0.0.1 --port 5050 --data-dir ./data</code></pre>
+          </li>
+          <li><strong>טרמינל 2 — לקוח Alice:</strong> <span class="en">python -m secure_chess.client</span> → רישום → <span class="en">Join Lobby</span>.</li>
+          <li><strong>טרמינל 3 — לקוח Bob:</strong> <span class="en">python -m secure_chess.client</span> → רישום → <span class="en">Join Lobby</span>. השרת מצמיד והמשחק מתחיל.</li>
+          <li>לבצע 2–3 מהלכים, להראות שעדכון מצב מגיע <strong>לשני</strong> הלקוחות.</li>
+          <li>לפתוח את <span class="en">data/users.json</span> ולהראות <span class="en">hashes</span> בלבד.</li>
+          <li><strong>בונוס AI:</strong> <span class="en">python -m secure_chess.client --cli</span> → <span class="en">play_ai</span>.</li>
+          <li><strong>בונוס מקבילי:</strong> לפתוח עוד 2 לקוחות → שני משחקים בו זמנית.</li>
+          <li>להריץ <span class="en">pytest -v</span> ולהראות 60+ בדיקות ירוקות.</li>
+        </ol>
+        <div class="speaker-tip">להכין מראש את ארבעת הטרמינלים פתוחים — לא מאבדים זמן על הקלדה מול הבוחן.</div>
+      </section>
+
+      <!-- ============== 29. WHAT TO SAY ============== -->
+      <section>
+        <h2>שאלות צפויות מהבוחן — תשובות מוכנות</h2>
+        <ul>
+          <li><strong>"למה <span class="en">bcrypt</span> ולא <span class="en">SHA-256</span>?"</strong> — <span class="en">bcrypt</span> איטי בכוונה ומכיל <span class="en">salt</span> פנימי, ולכן עמיד ל‑<span class="en">brute-force</span> וטבלאות <span class="en">rainbow</span>.</li>
+          <li><strong>"איך אתה מבטיח שהתקשורת בין שני המהלכים לא תתערבב?"</strong> — <span class="en">JSON-Lines</span> נותן <em>framing</em> ברור (<span class="en">\n</span>), ו‑<span class="en">_LineReader</span> צובר עד שמגיע סוף שורה.</li>
+          <li><strong>"מה קורה אם לקוח מתנתק באמצע משחק?"</strong> — <span class="en">_on_disconnect</span> ב‑<span class="en">Session</span> קורא ל‑<span class="en">Game.handle_disconnect</span> שמסיים את המשחק בניצחון לצד השני (<span class="en">reason="disconnect"</span>).</li>
+          <li><strong>"איך השרת מטפל בכמה שחקנים בו זמנית?"</strong> — <span class="en">thread per connection</span> + מבני נתונים משותפים תחת <span class="en">threading.Lock</span>.</li>
+          <li><strong>"איפה החוקיות נאכפת?"</strong> — רק ב‑<span class="en">Board.apply</span> בשרת. הלקוח לא מאמת — אחרת לקוח זדוני יוכל לרמות.</li>
+          <li><strong>"איך ה‑<span class="en">AI</span> משתלב מבלי לכתוב מסלול מיוחד?"</strong> — <span class="en">AISession</span> מחקה את הממשק של <span class="en">Session</span> (<span class="en">duck typing</span>) ולכן <span class="en">Game</span> לא מבדיל ביניהם.</li>
+        </ul>
+      </section>
+
+      <!-- ============== 30. CLOSING ============== -->
+      <section class="title-slide">
+        <h1>סיכום</h1>
+        <p style="margin-top: 18px;">
+          ארכיטקטורה נקייה, פרוטוקול <span class="en">JSON-Lines</span> פשוט אך עמיד,
+          סיסמאות מוגנות ב‑<span class="en">bcrypt</span>, ריבוי משחקים תחת
+          <span class="en">threading</span>, ויריב <span class="en">AI</span> מבוסס
+          <span class="en">alpha-beta minimax</span> — הכל מכוסה ב‑60+ בדיקות
+          <span class="en">pytest</span>.
+        </p>
+        <div class="badge" style="margin-top: 26px;">תודה — נשמח לשאלות</div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      rtl: false,
+      width: 1280,
+      height: 800,
+      margin: 0.04,
+      controls: true,
+      progress: true,
+      transition: 'slide',
+      plugins: [ RevealHighlight ],
+    });
+  </script>
+</body>
+</html>
