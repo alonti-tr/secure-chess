@@ -1,10 +1,3 @@
-"""JSON-backed credential store with bcrypt-hashed passwords.
-
-The persistent file `users.json` is rewritten atomically (`write-to-tempfile +
-os.replace`) on every registration. A single `threading.Lock` guards every
-mutating method.
-"""
-
 from __future__ import annotations
 
 import json

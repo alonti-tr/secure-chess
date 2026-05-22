@@ -1,11 +1,3 @@
-"""Build a comprehensive Hebrew Word document teaching a student how to
-present the Secure-Chess project to an examiner.
-
-The student has NOT built the project themselves, so the document covers
-every background concept they need to understand AND a slide-by-slide
-speaker script, plus a glossary, demo script, and anticipated Q&A.
-"""
-
 from __future__ import annotations
 
 import re
@@ -35,7 +27,6 @@ TIP_BORDER = RGBColor(0xF5, 0xA6, 0x23)
 TABLE_HEAD_BG = RGBColor(0xEA, 0xF2, 0xFD)
 
 
-# --------------------------------------------------------------------- helpers
 
 def _set_bidi(paragraph) -> None:
     pPr = paragraph._p.get_or_add_pPr()
@@ -90,7 +81,6 @@ def rgb_hex(rgb: RGBColor) -> str:
     return "{:02X}{:02X}{:02X}".format(rgb[0], rgb[1], rgb[2])
 
 
-# --------------------------------------------------------------------- styles
 
 def setup_styles(doc: Document) -> None:
     style = doc.styles["Normal"]
@@ -118,7 +108,6 @@ def setup_styles(doc: Document) -> None:
         s.font.bold = bold
 
 
-# --------------------------------------------------------------------- writers
 
 def he_paragraph(doc, text=None, *, style=None, bold=False, size=12,
                  italic=False, color=None, space_before=2, space_after=4,
@@ -145,11 +134,6 @@ def he_paragraph(doc, text=None, *, style=None, bold=False, size=12,
 def he_segments(doc, segments, *, style=None, size=12, bullet=False,
                 bold=False, space_before=2, space_after=4,
                 align=WD_ALIGN_PARAGRAPH.RIGHT):
-    """Add a paragraph composed of (text, kind) segments.
-
-    kind: 'he' (default), 'en' (Consolas inline code), 'bold', 'italic',
-          'accent' (Arial bold blue), 'muted'.
-    """
     if bullet:
         p = doc.add_paragraph(style="List Bullet")
     elif style:
@@ -190,7 +174,7 @@ def he_segments(doc, segments, *, style=None, size=12, bullet=False,
             run.font.size = Pt(size)
             run.font.color.rgb = MUTED
             _set_run_rtl(run)
-        else:  # "he"
+        else:
             run.font.name = HE_FONT
             run.font.size = Pt(size)
             run.font.bold = bold
@@ -365,11 +349,9 @@ def page_break(doc):
 
 
 def quote_in_he(text: str) -> str:
-    """Helper: wrap a string in Hebrew-friendly quotes (not strictly needed)."""
     return f'"{text}"'
 
 
-# --------------------------------------------------------------------- content
 
 def build_document(out_path: Path) -> None:
     doc = Document()
@@ -384,15 +366,12 @@ def build_document(out_path: Path) -> None:
     bidi = OxmlElement("w:bidi")
     sectPr.append(bidi)
 
-    # ========== COVER ==========
     write_cover(doc)
     page_break(doc)
 
-    # ========== HOW TO USE ==========
     write_how_to_use(doc)
     page_break(doc)
 
-    # ========== PART A: BACKGROUND ==========
     heading(doc, "חלק א'  —  הרקע שאתה חייב להבין לפני שמציגים")
     he_paragraph(doc,
                  "לפני שאתה ניגש לבוחן, ודא שאתה מבין את התשעה מושגי הליבה הבאים. "
@@ -402,7 +381,6 @@ def build_document(out_path: Path) -> None:
     write_background_section(doc)
     page_break(doc)
 
-    # ========== PART B: SLIDE-BY-SLIDE ==========
     heading(doc, "חלק ב'  —  מדריך שקופית-אחר-שקופית")
     he_paragraph(doc,
                  "לכל אחת מ‑30 השקופיות במצגת יש כאן: (1) רעיון מרכזי, "
@@ -412,27 +390,22 @@ def build_document(out_path: Path) -> None:
     write_slide_guide(doc)
     page_break(doc)
 
-    # ========== PART C: DEMO SCRIPT ==========
     heading(doc, "חלק ג'  —  תסריט להדגמה החיה")
     write_demo_script(doc)
     page_break(doc)
 
-    # ========== PART D: Q&A ==========
     heading(doc, "חלק ד'  —  שאלות צפויות מהבוחן ותשובות מוכנות")
     write_qa(doc)
     page_break(doc)
 
-    # ========== PART E: FILES MAP ==========
     heading(doc, "חלק ה'  —  מפת הקוד  (אילו קבצים לפתוח אם הבוחן יבקש)")
     write_files_map(doc)
     page_break(doc)
 
-    # ========== PART F: GLOSSARY ==========
     heading(doc, "חלק ו'  —  מילון מונחים")
     write_glossary(doc)
     page_break(doc)
 
-    # ========== PART G: CHEAT SHEET ==========
     heading(doc, "חלק ז'  —  דף תזכורת מהיר  (להדפיס ולקחת איתך)")
     write_cheat_sheet(doc)
 
@@ -440,7 +413,6 @@ def build_document(out_path: Path) -> None:
     print(f"wrote {out_path}")
 
 
-# --------------------------------------------------------------------- sections
 
 def write_cover(doc):
     he_paragraph(doc, "", space_before=80)
@@ -506,7 +478,6 @@ def write_how_to_use(doc):
 
 def write_background_section(doc):
 
-    # --- 1. project overview
     heading(doc, "1. מה זה הפרויקט, ב‑3 משפטים", level=2)
     he_paragraph(doc,
                  "זאת מערכת שמאפשרת לשני שחקנים אנושיים להירשם בשרת מרכזי "
@@ -518,7 +489,6 @@ def write_background_section(doc):
                  "ראוי לציון גבוה: (א) השרת תומך בכמה זוגות שחקנים בו זמנית, "
                  "(ב) במקום לשחק נגד אדם אחר, אפשר לשחק נגד יריב מחושב (AI).")
 
-    # --- 2. client-server
     heading(doc, "2. \"לקוח‑שרת\" (Client–Server) — איך זה עובד?", level=2)
     he_paragraph(doc,
                  "תוכנית \"שרת\" היא תוכנית אחת שרצה כל הזמן ומחכה שמישהו יתחבר "
@@ -538,7 +508,6 @@ def write_background_section(doc):
         (" הוא שומר את הסיסמאות. הלקוח הוא רק \"מסך\" שמראה את התוצאות.", "he"),
     ])
 
-    # --- 3. TCP
     heading(doc, "3. TCP — איך נשלחים הביטים בין הלקוח לשרת", level=2)
     he_paragraph(doc,
                  "TCP זה פרוטוקול קישוריות ברמה נמוכה (השכבה הרביעית במודל "
@@ -563,7 +532,6 @@ def write_background_section(doc):
          "שכבת framing (ראה סעיף 4).", "he"),
     ])
 
-    # --- 4. JSON-Lines
     heading(doc, "4. JSON-Lines — איך כל הודעה מובדלת מהבאה", level=2)
     he_paragraph(doc,
                  "JSON זה פורמט טקסטואלי לתיאור אובייקטים. JSON-Lines זה "
@@ -589,7 +557,6 @@ def write_background_section(doc):
         (", ואז חותך משם הודעה אחת ומחזיר אותה.", "he"),
     ])
 
-    # --- 5. bcrypt
     heading(doc, "5. הצפנת סיסמאות עם bcrypt — מה זה ולמה דווקא הוא", level=2)
     he_paragraph(doc,
                  "כשמשתמש נרשם בשרת אנחנו לא יכולים לשמור את הסיסמה בקובץ "
@@ -630,7 +597,6 @@ def write_background_section(doc):
         (". יש שם רק 14 שורות קוד בסך הכל.", "he"),
     ])
 
-    # --- 6. Threading
     heading(doc, "6. Threading — איך השרת מטפל בכמה שחקנים בו זמנית", level=2)
     he_paragraph(doc,
                  "Thread זה \"חוט ביצוע\" עצמאי בתוך אותה תוכנית. כשפותחים "
@@ -664,7 +630,6 @@ def write_background_section(doc):
         (".", "he"),
     ])
 
-    # --- 7. AI
     heading(doc, "7. AI — איך המחשב בוחר מהלך טוב", level=2)
     he_paragraph(doc,
                  "אלגוריתם השחמט שלנו נקרא \"מינימקס עם גיזום אלפא-בטא\" "
@@ -706,7 +671,6 @@ def write_background_section(doc):
         (" אפילו לא יודע שזה לא בן-אדם — וגם לא צריך לדעת.", "he"),
     ])
 
-    # --- 8. state machine
     heading(doc, "8. \"מכונת מצבים\" של החיבור (Session State Machine)", level=2)
     he_paragraph(doc,
                  "לכל לקוח שמחובר לשרת יש \"מצב\" שאומר מה הוא עושה כרגע. "
@@ -732,7 +696,6 @@ def write_background_section(doc):
                  "ש‑\"משהו יתפוצץ\".",
                  space_after=8)
 
-    # --- 9. tests
     heading(doc, "9. בדיקות אוטומטיות עם pytest", level=2)
     he_paragraph(doc,
                  "pytest זאת ספריית בדיקות סטנדרטית של Python. כל קובץ "
@@ -751,7 +714,6 @@ def write_background_section(doc):
     ])
 
 
-# ---- Part B: per-slide ------------------------------------------------------
 
 SLIDE_GUIDE = [
     (1, "שער",
@@ -1083,7 +1045,6 @@ def write_slide_guide(doc):
         ])
 
 
-# ---- Part C: demo -----------------------------------------------------------
 
 def write_demo_script(doc):
     he_paragraph(doc,
@@ -1180,7 +1141,6 @@ def write_demo_script(doc):
                  "תרחיש אחר. הירוק מוכיח שהקוד עובד כמצופה.\"")
 
 
-# ---- Part D: Q&A ------------------------------------------------------------
 
 QA = [
     ("למה לא הצפנת גם את התקשורת בנוסף לסיסמאות?",
@@ -1303,7 +1263,6 @@ def write_qa(doc):
             he_paragraph(doc, paragraph, size=12, space_after=4)
 
 
-# ---- Part E: files map ------------------------------------------------------
 
 def write_files_map(doc):
     he_paragraph(doc,
@@ -1387,7 +1346,6 @@ def write_files_map(doc):
         run2.font.size = Pt(11)
 
 
-# ---- Part F: glossary -------------------------------------------------------
 
 GLOSSARY = [
     ("TCP",
@@ -1493,7 +1451,6 @@ def write_glossary(doc):
         ], space_after=3)
 
 
-# ---- Part G: cheat sheet ----------------------------------------------------
 
 def write_cheat_sheet(doc):
     he_paragraph(doc,
@@ -1565,7 +1522,6 @@ def write_cheat_sheet(doc):
                  "3. \"שאלה טובה — בנוי כך כי X, אבל בהחלט אפשר היה גם Y.\"")
 
 
-# --------------------------------------------------------------------- main
 
 if __name__ == "__main__":
     here = Path(__file__).parent

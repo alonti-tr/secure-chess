@@ -1,16 +1,3 @@
-"""Tkinter GUI client for the secure-chess server.
-
-Three screens managed by a single Tk root: Login → Lobby → Game. The GUI speaks
-exactly the same JSON-Lines wire protocol as the CLI client in
-`secure_chess.client.cli`, so any combination of GUI and CLI clients can play
-against each other or against the AI.
-
-Threading: a single background reader thread drains the TCP socket and pushes
-every server message onto a `queue.Queue`. The Tk main loop polls that queue
-every 50ms via `root.after`, ensuring every widget mutation happens on the Tk
-main thread.
-"""
-
 from __future__ import annotations
 
 import queue
@@ -40,14 +27,6 @@ PIECE_TO_UNICODE = {
 
 
 def parse_fen_placement(fen_short: str) -> List[List[Optional[str]]]:
-    """Parse the placement field of a FEN-short string into an 8x8 grid.
-
-    Returns a 2D list `grid[file][rank_from_top]` where:
-    - file 0 = a-file, file 7 = h-file
-    - rank_from_top 0 = rank 8, rank_from_top 7 = rank 1
-    - each cell is either `None` or a one-character FEN piece code
-      (uppercase = white, lowercase = black)
-    """
     placement = fen_short.split()[0] if fen_short else ""
     grid: List[List[Optional[str]]] = [[None] * 8 for _ in range(8)]
     for rank_idx, row in enumerate(placement.split("/")):
@@ -64,7 +43,6 @@ def parse_fen_placement(fen_short: str) -> List[List[Optional[str]]]:
 
 
 def square_to_grid(sq: str) -> Optional[Tuple[int, int]]:
-    """Convert algebraic notation (e.g. 'e2') to grid coords `(file, rank_from_top)`."""
     if not isinstance(sq, str) or len(sq) != 2:
         return None
     f = ord(sq[0]) - ord("a")
@@ -80,16 +58,10 @@ def square_to_grid(sq: str) -> Optional[Tuple[int, int]]:
 
 
 def grid_to_square(file: int, rank_from_top: int) -> str:
-    """Convert grid coords to algebraic notation (e.g. (4,6) -> 'e2')."""
     return f"{chr(ord('a') + file)}{8 - rank_from_top}"
 
 
 class ServerConnection:
-    """Background TCP reader publishing every message onto a thread-safe queue.
-
-    The queue is consumed by `ChessGui._poll_events` on the Tk main thread, so
-    no Tk widget is ever touched by the reader thread.
-    """
 
     def __init__(self, host: str, port: int, timeout: float = 5.0) -> None:
         self._sock = socket.create_connection((host, port), timeout=timeout)
@@ -132,7 +104,6 @@ class ServerConnection:
 
 
 class ChessGui:
-    """Top-level Tk application managing the three screens and the server connection."""
 
     def __init__(self, host: str, port: int) -> None:
         self.host = host
@@ -350,7 +321,6 @@ class ChessGui:
 
 
 class LoginFrame(tk.Frame):
-    """First screen: connect + authenticate (register or login)."""
 
     def __init__(self, parent: tk.Widget, app: ChessGui) -> None:
         super().__init__(parent)
@@ -434,13 +404,6 @@ class LoginFrame(tk.Frame):
 
 
 class LobbyFrame(tk.Frame):
-    """Second screen: choose to play another human or play against the AI.
-
-    Tracks two visual sub-states driven by `ChessGui.waiting_in_lobby`:
-    - normal: both Join Lobby and Start AI Game are enabled.
-    - waiting: a yellow banner with "Waiting for opponent..." is shown and the
-      two action buttons are greyed out; only Cancel + Logout remain clickable.
-    """
 
     def __init__(self, parent: tk.Widget, app: ChessGui) -> None:
         super().__init__(parent)
@@ -588,7 +551,6 @@ class LobbyFrame(tk.Frame):
 
 
 class GameFrame(tk.Frame):
-    """Third screen: status bar, clickable 8x8 board, move log, resign button."""
 
     def __init__(self, parent: tk.Widget, app: ChessGui) -> None:
         super().__init__(parent)
@@ -811,5 +773,4 @@ class GameFrame(tk.Frame):
 
 
 def run_gui(host: str, port: int) -> int:
-    """Entry point used by `secure_chess.client.__main__`."""
     return ChessGui(host, port).run()

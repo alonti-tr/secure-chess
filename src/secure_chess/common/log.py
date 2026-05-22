@@ -1,6 +1,3 @@
-"""Logging helper. All server output goes to `stderr` via `logging`; `stdout` is
-reserved for the client UI."""
-
 from __future__ import annotations
 
 import logging

@@ -1,8 +1,3 @@
-"""Simple alpha-beta minimax chess AI with material-balance evaluation.
-
-This is the BONUS AI opponent (US4). Stronger play is out of scope.
-"""
-
 from __future__ import annotations
 
 import math
@@ -27,7 +22,6 @@ CHECKMATE_SCORE = 1_000_000
 
 
 def evaluate(board: Board) -> int:
-    """Material-balance from White's perspective, in centipawns."""
     score = 0
     for f in range(8):
         for r in range(8):
@@ -40,7 +34,6 @@ def evaluate(board: Board) -> int:
 
 
 class AIPlayer:
-    """Pick a legal move via alpha-beta minimax to a fixed depth."""
 
     def choose_move(self, board: Board, depth: int = 3) -> Move:
         depth = max(1, min(4, int(depth)))

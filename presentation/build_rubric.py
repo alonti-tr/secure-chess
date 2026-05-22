@@ -1,9 +1,3 @@
-"""Build the formal Hebrew project rubric (מחוון-תיק-פרויקט.docx).
-
-The rubric is aligned to the *actual* code (bcrypt only, plain TCP) and the
-teacher's original guidance ("הצפנת סיסמאות בלבד, ללא הצפנת מידע רגיש בתקשורת").
-"""
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -63,12 +57,6 @@ _TOGGLE_TAGS = frozenset({"bidi", "rtl", "rtlGutter"})
 
 
 def _insert_ordered(parent, tag_name: str, order: tuple[str, ...]):
-    """Insert <w:tag_name/> into parent at the correct OOXML schema position.
-
-    Toggle-property elements (bidi, rtl, rtlGutter) get an explicit w:val="1"
-    to defeat OOXML's toggle semantics — a bare <w:bidi/> in pPr would XOR
-    against the inherited value from docDefaults, cancelling out to LTR.
-    """
     existing = parent.find(qn(f"w:{tag_name}"))
     if existing is not None:
         if tag_name in _TOGGLE_TAGS:
@@ -145,7 +133,6 @@ def rgb_hex(rgb: RGBColor) -> str:
 
 
 def _style_set_rtl(style, *, align_right: bool = True) -> None:
-    """Mark a paragraph style as RTL-by-default so every inheriting paragraph is RTL."""
     style_el = style.element
     pPr = style_el.find(qn("w:pPr"))
     if pPr is None:
@@ -165,7 +152,6 @@ def _style_set_rtl(style, *, align_right: bool = True) -> None:
 
 
 def _set_doc_defaults_rtl(doc: Document) -> None:
-    """Mark document defaults as RTL so every paragraph and run inherits RTL."""
     styles_element = doc.styles.element
     docDefaults = styles_element.find(qn("w:docDefaults"))
     if docDefaults is None:
@@ -372,13 +358,6 @@ def build_document() -> None:
 
 
 def _word_postprocess_rtl(docx_path: Path) -> None:
-    """Force RTL paragraph direction via Word COM after python-docx is done.
-
-    Word 2010+ ignores bidi inheritance from docDefaults under certain
-    conditions, so we open the file in Word and explicitly mark every
-    paragraph as RTL, then re-save. Word resolves all inheritance ambiguity
-    itself.
-    """
     try:
         import win32com.client
     except ImportError:

@@ -1,12 +1,3 @@
-"""The `Board` class - the chess position plus the auxiliary state required by
-the rules (castling rights, en-passant target square, halfmove clock, fullmove
-number, repetition history).
-
-`Board` is the heart of the game and the single source of truth for legality.
-Every server-side move is fed through `Board.apply`, which is the only place
-that mutates the position.
-"""
-
 from __future__ import annotations
 
 from typing import Iterable, List, Optional, Tuple
@@ -43,7 +34,6 @@ _PIECE_FROM_FEN = {
 
 
 class Board:
-    """8x8 chess board. `squares[file][rank]` is the piece on that square."""
 
     __slots__ = (
         "squares",
@@ -108,8 +98,6 @@ class Board:
         raise AssertionError(f"no {color} king on the board")
 
     def is_square_attacked(self, sq: Square, by_color: Color) -> bool:
-        """True if any `by_color` piece can capture onto `sq` (independent of
-        whose turn it is). Used both for is_in_check and for castling tests."""
         f, r = sq
         for df, dr in KNIGHT_OFFSETS:
             t = (f + df, r + dr)
@@ -195,8 +183,6 @@ class Board:
         return False
 
     def apply(self, move: Move) -> Move:
-        """Validate `move` and mutate the board. Returns the resolved move with
-        flags (capture, castle, en-passant, promotion) populated."""
         resolved: Optional[Move] = None
         for legal in self.legal_moves(self.side_to_move):
             if legal.matches(move):

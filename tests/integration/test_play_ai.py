@@ -1,5 +1,3 @@
-"""[US4] End-to-end: a logged-in player plays against the AI."""
-
 from __future__ import annotations
 
 import socket

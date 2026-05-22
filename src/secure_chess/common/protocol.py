@@ -1,9 +1,3 @@
-"""JSON-Lines wire protocol over a raw TCP socket.
-
-Framing: one JSON object per line, UTF-8 encoded, terminated by `\\n`. The full
-message schema lives in `specs/002-secure-chess/contracts/wire-protocol.md`.
-"""
-
 from __future__ import annotations
 
 import json
@@ -54,11 +48,6 @@ def send_message(sock: socket.socket, msg: Dict[str, Any]) -> None:
 
 
 class _LineReader:
-    """Buffers a TCP socket and yields one JSON line per `read_line` call.
-
-    Stored as an attribute on the `Session`/client so partial reads survive
-    across calls.
-    """
 
     def __init__(self, sock: socket.socket) -> None:
         self._sock = sock

@@ -1,16 +1,3 @@
-"""Chess piece types, colours, and per-piece pseudo-legal move generation.
-
-This module defines:
-  - `Color`             : WHITE / BLACK with an `opposite()` helper.
-  - `PieceType`         : the six chess piece kinds.
-  - `SYMBOLS`           : single-letter symbols for ASCII rendering (uppercase = white).
-  - `Piece`             : a (kind, color) pair plus pseudo-legal move generation.
-
-Pseudo-legal generation does NOT filter out moves that leave the mover's own king in check
-- that filter lives on `Board` (see `board.py`) so the same per-piece logic is reused both
-for legal move generation and for the king-attack scan used by `Board.is_in_check`.
-"""
-
 from __future__ import annotations
 
 from dataclasses import dataclass

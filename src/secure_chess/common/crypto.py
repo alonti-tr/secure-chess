@@ -1,10 +1,3 @@
-"""Password hashing primitives.
-
-Wraps `bcrypt` so the rest of the codebase never imports `bcrypt` directly.
-`bcrypt` automatically generates and embeds a per-password salt in the returned
-string, so callers don't need separate salt management.
-"""
-
 from __future__ import annotations
 
 import bcrypt

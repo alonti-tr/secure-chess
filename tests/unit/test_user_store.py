@@ -1,5 +1,3 @@
-"""T016 [US1] UserStore registration, persistence, authentication."""
-
 from __future__ import annotations
 
 import pytest

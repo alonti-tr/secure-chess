@@ -1,11 +1,3 @@
-"""Square coordinates, the `Move` dataclass, and coordinate-algebraic parsing.
-
-Coordinates are 0-indexed `(file, rank)` tuples where file 0 = 'a' and rank 0 = '1'.
-The wire notation is coordinate algebraic: `<from-square><to-square>[<promotion-piece>]`
-- examples: `e2e4`, `e7e8q`. Castling uses the king's two-square move (`e1g1` /
-`e1c1` / `e8g8` / `e8c8`).
-"""
-
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -72,7 +64,6 @@ class Move:
         return s
 
     def matches(self, other: "Move") -> bool:
-        """Same origin / target / promotion (ignores flags set by `Board.apply`)."""
         return (
             self.origin == other.origin
             and self.target == other.target

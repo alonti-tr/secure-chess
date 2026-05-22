@@ -1,10 +1,3 @@
-"""Integration tests for the `cancel_lobby` wire-protocol message.
-
-`cancel_lobby` lets an authenticated session leave the matchmaking queue
-without disconnecting, so the player can immediately switch to `play_ai` or
-just return to the lobby screen without re-logging in.
-"""
-
 from __future__ import annotations
 
 import socket

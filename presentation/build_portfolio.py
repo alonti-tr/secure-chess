@@ -1,10 +1,3 @@
-"""Build the formal Hebrew project portfolio (תיק-פרויקט.docx).
-
-The portfolio reflects the *actual* code state, which uses bcrypt for
-passwords at rest and a plain JSON-Lines TCP transport — per the teacher's
-original guidance ("הצפנת סיסמאות בלבד, ללא הצפנת מידע רגיש העובר בתקשורת").
-"""
-
 from __future__ import annotations
 
 import datetime
@@ -40,7 +33,6 @@ TABLE_HEAD_BG = RGBColor(0xEA, 0xF2, 0xFD)
 
 
 def _set_ltr(paragraph) -> None:
-    """Force a paragraph to LTR direction (used for English code blocks)."""
     pPr = paragraph._p.get_or_add_pPr()
     bidi = pPr.find(qn("w:bidi"))
     if bidi is None:
@@ -127,18 +119,6 @@ _TOGGLE_TAGS = frozenset({"bidi", "rtl", "rtlGutter"})
 
 
 def _insert_ordered(parent, tag_name: str, order: tuple[str, ...]):
-    """Insert <w:tag_name/> into parent at the correct OOXML schema position.
-
-    Word enforces strict child order in containers like w:pPr and w:sectPr.
-    Out-of-order children are silently ignored (e.g. <w:bidi/> placed after
-    <w:docGrid/> in sectPr will not produce an RTL section).
-
-    Toggle-property elements (<w:bidi/>, <w:rtl/>, <w:rtlGutter/>) are written
-    with an explicit w:val="1" to defeat OOXML's toggle semantics. Without
-    w:val, a toggle element in pPr flips the inherited value — so writing
-    <w:bidi/> twice (once in docDefaults, once on the paragraph) cancels back
-    to LTR, which is what was happening here.
-    """
     existing = parent.find(qn(f"w:{tag_name}"))
     if existing is not None:
         if tag_name in _TOGGLE_TAGS:
@@ -158,24 +138,16 @@ def _insert_ordered(parent, tag_name: str, order: tuple[str, ...]):
 
 
 def _insert_in_pPr_ordered(pPr, tag_name: str):
-    """Insert <w:tag_name/> into pPr at its correct CT_PPrBase schema position."""
     return _insert_ordered(pPr, tag_name, _PPR_ORDER)
 
 
 def _setup_section_rtl(section) -> None:
-    """Mark a section as RTL with correctly-ordered sectPr children."""
     sectPr = section._sectPr
     _insert_ordered(sectPr, "bidi", _SECT_PR_ORDER)
     _insert_ordered(sectPr, "rtlGutter", _SECT_PR_ORDER)
 
 
 def _style_set_rtl(style, *, align_right: bool = True) -> None:
-    """Mark a paragraph style as RTL-by-default so every inheriting paragraph is RTL.
-
-    Word reads w:bidi off the style's pPr and w:rtl off the rPr when rendering
-    inheriting paragraphs. Without this, even pPr-level <w:bidi/> on individual
-    paragraphs can render LTR when Word falls back to the style for alignment.
-    """
     style_el = style.element
     pPr = style_el.find(qn("w:pPr"))
     if pPr is None:
@@ -195,12 +167,6 @@ def _style_set_rtl(style, *, align_right: bool = True) -> None:
 
 
 def _set_doc_defaults_rtl(doc: Document) -> None:
-    """Mark document defaults as RTL so every paragraph and run inherits RTL.
-
-    docDefaults sit above every named style in the inheritance chain, so adding
-    <w:bidi/> + <w:jc w:val="right"/> to pPrDefault and <w:rtl/> to rPrDefault
-    guarantees RTL even for paragraphs that bypass our helpers.
-    """
     styles_element = doc.styles.element
     docDefaults = styles_element.find(qn("w:docDefaults"))
     if docDefaults is None:
@@ -536,16 +502,6 @@ def build_document() -> None:
 
 
 def _word_postprocess_rtl(docx_path: Path) -> None:
-    """Force RTL paragraph direction via Word COM after python-docx is done.
-
-    python-docx writes <w:bidi/> + <w:jc w:val="right"/> + <w:rtl/> exactly per
-    the OOXML spec, yet Word 2010+ still loads our paragraphs as LTR (verified
-    via Paragraph.Format.ReadingOrder == 0 in COM). This is a long-standing
-    Word quirk around docDefaults + bidi inheritance. The cleanest fix is to
-    open the file in Word and explicitly set ReadingOrder = 1
-    (wdReadingOrderRtl) on every paragraph, then re-save. Word resolves all
-    inheritance ambiguity itself on save.
-    """
     try:
         import win32com.client
     except ImportError:

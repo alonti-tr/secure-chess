@@ -1,15 +1,7 @@
-"""Exception hierarchy for the secure-chess project.
-
-All errors raised by `common/*` and `server/*` derive from `SecureChessError` so a
-single `except SecureChessError` at the server's top-level dispatcher can convert
-domain errors into wire-protocol `error` messages with a meaningful `code`.
-"""
-
 from __future__ import annotations
 
 
 class SecureChessError(Exception):
-    """Base for every domain error in this project."""
 
     code: str = "internal_error"
 

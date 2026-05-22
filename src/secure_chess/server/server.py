@@ -1,10 +1,3 @@
-"""TCP accept loop for the secure-chess server.
-
-`ChessServer` owns the listening socket and one shared `UserStore` / `Lobby` /
-`GameRegistry`. Every accepted connection becomes a `Session` running on its
-own daemon thread.
-"""
-
 from __future__ import annotations
 
 import socket

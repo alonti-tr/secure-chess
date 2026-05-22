@@ -1,9 +1,3 @@
-"""Unit tests for the pure helpers of the Tkinter client.
-
-These tests exercise the GUI module without ever instantiating a Tk root, so
-they run headlessly in CI just like every other unit test in the suite.
-"""
-
 from __future__ import annotations
 
 import pytest
@@ -75,7 +69,7 @@ class TestSquareToGrid:
         ["", "a", "abc", "z1", "a0", "a9", "i1", "11", "aa", None, 42],
     )
     def test_invalid_returns_none(self, bad: object) -> None:
-        assert square_to_grid(bad) is None  # type: ignore[arg-type]
+        assert square_to_grid(bad) is None
 
 
 class TestGridToSquare:

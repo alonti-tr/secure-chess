@@ -1,5 +1,3 @@
-"""`Game` and `Result` - the match between two sessions sharing a `Board`."""
-
 from __future__ import annotations
 
 import uuid
@@ -19,8 +17,8 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class Result:
-    outcome: str    # "white_wins" | "black_wins" | "draw"
-    reason: str     # "checkmate" | "stalemate" | "fifty-move" | "threefold" | "resignation" | "disconnect"
+    outcome: str
+    reason: str
 
     @classmethod
     def white_wins(cls, reason: str) -> "Result":

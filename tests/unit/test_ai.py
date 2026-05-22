@@ -1,5 +1,3 @@
-"""T045 [US4] AI must always return a legal move and spot mate-in-1."""
-
 from __future__ import annotations
 
 import time
@@ -48,9 +46,6 @@ def test_ai_picks_mate_in_one():
 
 
 def test_ai_finds_mating_move_scholars_mate_setup():
-    """Position after 1.e4 e5 2.Bc4 Nc6 3.Qh5 Nf6.
-    White to move; Qxf7 is the famous Scholar's Mate.
-    """
     board = Board.from_fen_short(
         "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq -"
     )
@@ -59,7 +54,6 @@ def test_ai_finds_mating_move_scholars_mate_setup():
 
 
 def test_ai_makes_only_legal_moves_in_short_game():
-    """Drive a short game where the AI plays both sides and ensure it never errors."""
     board = Board.initial()
     ai = AIPlayer()
     for _ in range(10):

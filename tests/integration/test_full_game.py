@@ -1,5 +1,3 @@
-"""T027 [US2] End-to-end: two clients play Scholar's Mate over the wire."""
-
 from __future__ import annotations
 
 import socket

@@ -1,9 +1,3 @@
-"""Build the Secure-Chess presentation as a PowerPoint (.pptx) file.
-
-Mirrors the 30-slide deck from presentation/index.html. Hebrew paragraphs are
-RTL-aligned, English code blocks are LTR with a dark monospace style.
-"""
-
 from __future__ import annotations
 
 import copy
@@ -46,7 +40,6 @@ COLOR_TABLE_HEAD = RGBColor(0xEA, 0xF2, 0xFD)
 
 
 def set_rtl(paragraph) -> None:
-    """Mark a paragraph as right-to-left so Hebrew bullets render correctly."""
     pPr = paragraph._pPr
     if pPr is None:
         pPr = paragraph._p.get_or_add_pPr()
@@ -118,16 +111,10 @@ EM_SPACE = "\u2003"
 
 
 def numbered_segment(n: int):
-    """Return a (text, kind) tuple for a list numbering prefix.
-
-    Embeds an EM space directly in the prefix so the gap between '1.' and
-    the Hebrew word that follows survives PowerPoint's bidi reordering."""
     return (f"{n}.{EM_SPACE}", "num")
 
 
 def _normalize_segments(segments):
-    """Replace boundary ASCII spaces with NBSP so PowerPoint won't collapse
-    them across bidi (RTL/LTR) run boundaries."""
     normalized = []
     for seg in segments:
         if isinstance(seg, str):
@@ -150,11 +137,6 @@ def _normalize_segments(segments):
 def add_he_paragraph(text_frame, segments, *, size=16, bold=False,
                      bullet=False, alignment=PP_ALIGN.RIGHT, first=False,
                      space_after=4):
-    """Add a Hebrew (RTL) paragraph composed of plain + inline-code segments.
-
-    `segments` is a list of (text, kind) tuples where kind is "he" / "en" /
-    "bold" / "muted" / "accent".
-    """
     p = add_paragraph(text_frame, first=first)
     p.alignment = alignment
     set_rtl(p)
@@ -195,7 +177,6 @@ def _set_bullet(paragraph) -> None:
 
 def add_code_block(slide, left, top, width, height, lines,
                    *, font_size=11):
-    """Render a colored code block with Python-style highlighting."""
     bg = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top,
                                 width, height)
     bg.fill.solid()
@@ -228,7 +209,6 @@ PY_KEYWORDS = {
 
 
 def _highlight_line(paragraph, text: str, font_size: int) -> None:
-    """Very simple Python-ish highlighter: comments, strings, keywords."""
     if not text:
         run = paragraph.add_run()
         run.text = " "
@@ -358,7 +338,6 @@ def add_callout(slide, left, top, width, height, segments,
 
 
 def add_speaker_tip(slide, left, top, width, height, body):
-    """`body` is either a plain Hebrew string or a list of (text, kind) segments."""
     box = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top,
                                  width, height)
     box.fill.solid()
@@ -436,7 +415,6 @@ def build_presentation(out_path: Path) -> None:
     print(f"wrote {out_path}  ({total} slides)")
 
 
-# ---------------------------------------------------------------------- slides
 
 def _center_title(slide, text: str, size: int = 44):
     box = add_textbox(slide, MARGIN_X, Inches(1.2),

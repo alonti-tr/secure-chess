@@ -1,10 +1,3 @@
-"""Client entry point: `python -m secure_chess.client`.
-
-By default this launches the Tkinter GUI client. Pass `--cli` to run the
-text-mode REPL client instead — useful for headless smoke tests and for users
-on systems without a display.
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -42,5 +35,5 @@ def main(argv: list[str] | None = None) -> int:
     return run_gui(args.host, args.port)
 
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     sys.exit(main())

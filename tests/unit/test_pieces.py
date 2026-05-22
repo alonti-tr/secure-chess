@@ -1,5 +1,3 @@
-"""T024 [US2] Per-piece pseudo-legal move generation."""
-
 from __future__ import annotations
 
 from secure_chess.common.board import Board

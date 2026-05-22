@@ -1,5 +1,3 @@
-"""T018 [US1] End-to-end: register, restart server, login (right + wrong pw)."""
-
 from __future__ import annotations
 
 import socket

@@ -1,9 +1,3 @@
-"""Smoke-test client used by quickstart validation (T053).
-
-Connects to a running secure-chess server, registers a user, then plays one
-move against the AI and prints what happens.
-"""
-
 from __future__ import annotations
 
 import socket

@@ -1,10 +1,3 @@
-"""Per-client server-side `Session` and the `SessionState` machine.
-
-Each accepted TCP connection runs in its own thread driving `Session.run()`. The
-handlers `handle_<type>` are added incrementally per user story (auth in US1,
-game in US2, AI in US4).
-"""
-
 from __future__ import annotations
 
 import socket
@@ -48,7 +41,6 @@ class SessionState(Enum):
 
 
 class Session:
-    """One connected client. Owns its socket; survives as long as the TCP connection."""
 
     def __init__(
         self,
@@ -121,7 +113,7 @@ class Session:
                     self._dispatch(msg)
                 except SecureChessError as exc:
                     self.send(protocol.error(exc.code, str(exc)))
-                except Exception as exc:  # pragma: no cover - defensive
+                except Exception as exc:
                     log.exception("[%s] unexpected error: %s", self.id[:8], exc)
                     self.send(protocol.error("internal_error", "internal server error"))
         finally:
@@ -136,7 +128,6 @@ class Session:
         handler(msg)
 
     def _on_disconnect(self) -> None:
-        """Clean-up when the TCP socket goes away. Concrete behaviour added in US2."""
         if self.state is SessionState.IN_LOBBY:
             self.lobby.remove(self)
         elif self.state is SessionState.IN_GAME and self.current_game is not None:
@@ -262,12 +253,6 @@ class Session:
 
 
 class AISession:
-    """In-memory session impersonating an AI opponent.
-
-    Implements the slice of the `Session` interface that `Game` and
-    `GameRegistry` actually consume: `send`, `account`, `state`, `current_game`,
-    and a `username`. Its `send` is a no-op because there is no socket.
-    """
 
     def __init__(self, depth: int, registry: "GameRegistry") -> None:
         self.id: str = uuid.uuid4().hex
@@ -281,7 +266,7 @@ class AISession:
     def username(self) -> str:
         return self.account.username
 
-    def send(self, msg: Dict[str, Any]) -> None:  # pragma: no cover - intentionally inert
+    def send(self, msg: Dict[str, Any]) -> None:
         return None
 
     def close(self) -> None:
@@ -289,8 +274,6 @@ class AISession:
 
 
 class _AIAccount:
-    """Tiny stand-in for an `Account` so `Game`/`GameRegistry` can treat the AI
-    like any other player when reading `session.account.username`."""
 
     def __init__(self, username: str) -> None:
         self.username = username

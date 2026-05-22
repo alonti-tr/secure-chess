@@ -1,5 +1,3 @@
-"""T025 [US2] Chess rules end-to-end on the `Board` class."""
-
 from __future__ import annotations
 
 import pytest

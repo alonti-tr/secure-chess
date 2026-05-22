@@ -1,5 +1,3 @@
-"""T026 [US2] Game-related wire messages round-trip + starting FEN-short."""
-
 from __future__ import annotations
 
 import socket

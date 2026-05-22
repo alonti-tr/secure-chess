@@ -1,5 +1,3 @@
-"""T015 [US1] bcrypt round-trip + no-plaintext property."""
-
 from __future__ import annotations
 
 from secure_chess.common.crypto import hash_password, verify_password

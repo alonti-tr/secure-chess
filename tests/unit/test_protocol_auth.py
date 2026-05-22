@@ -1,5 +1,3 @@
-"""T017 [US1] Wire protocol framing for register/login messages."""
-
 from __future__ import annotations
 
 import socket

@@ -1,5 +1,3 @@
-"""T041 [US3] Two parallel games on the same server stay isolated."""
-
 from __future__ import annotations
 
 import socket

@@ -1,9 +1,3 @@
-"""Console UI for the secure-chess client.
-
-A foreground reader thread continuously prints push messages while the main
-thread reads commands from stdin and forwards them to the server.
-"""
-
 from __future__ import annotations
 
 import shlex
@@ -23,7 +17,6 @@ PIECE_TO_GLYPH = {
 
 
 def render_board(fen_short: str) -> str:
-    """Render the first FEN field as an 8-rank ASCII grid."""
     placement = fen_short.split()[0]
     lines: list[str] = []
     for rank_idx, row in enumerate(placement.split("/")):
@@ -102,7 +95,7 @@ class ClientConnection:
             self.opponent = None
             self.last_board = None
             self.game_id = None
-        else:  # pragma: no cover - server should only send known types
+        else:
             print(f"[unknown push: {msg}]")
 
     def stop(self) -> None:

@@ -1,9 +1,3 @@
-"""Server-side match-making (`Lobby`) and active-game tracking (`GameRegistry`).
-
-Both are thread-safe so multiple session threads can call them concurrently
-- this is what enables the parallel-games bonus (US3).
-"""
-
 from __future__ import annotations
 
 import threading
@@ -124,7 +118,6 @@ class GameRegistry:
                  game.id[:8], game.result.outcome, game.result.reason)
 
     def drive_ai(self, ai_session) -> None:
-        """If `ai_session` is the side to move in its game, make the AI move now."""
         from secure_chess.common.ai import AIPlayer
 
         game = ai_session.current_game
