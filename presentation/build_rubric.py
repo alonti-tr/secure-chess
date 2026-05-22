@@ -319,7 +319,7 @@ def add_table(doc, headers: Sequence[str], rows: Sequence[Sequence[str]],
 
 
 def he_bullet(doc, text: str):
-    he_paragraph(doc, text, style="List Bullet", space_before=1, space_after=1)
+    return he_paragraph(doc, "●  " + text, space_before=1, space_after=1)
 
 
 def build_document() -> None:
@@ -357,24 +357,8 @@ def build_document() -> None:
     print(f"wrote rubric docx ({OUT_DOCX.stat().st_size:,} bytes)")
 
 
-def _word_postprocess_rtl(docx_path: Path) -> None:
-    try:
-        import win32com.client
-    except ImportError:
-        return
-    word = win32com.client.Dispatch("Word.Application")
-    word.Visible = False
-    try:
-        doc = word.Documents.Open(str(docx_path))
-        for para in doc.Paragraphs:
-            try:
-                para.Format.ReadingOrder = 1
-            except Exception:
-                pass
-        doc.Save()
-        doc.Close(SaveChanges=False)
-    finally:
-        word.Quit()
+def _word_postprocess_rtl(_docx_path: Path) -> None:
+    return
 
 
 def write_cover(doc):
