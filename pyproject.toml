@@ -13,9 +13,6 @@ dependencies = [
     "bcrypt>=4.1",
 ]
 
-[project.optional-dependencies]
-dev = ["pytest>=8.0"]
-
 [project.scripts]
 secure-chess-server = "secure_chess.server.__main__:main"
 secure-chess-client = "secure_chess.client.__main__:main"

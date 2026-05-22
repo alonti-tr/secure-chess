@@ -427,8 +427,7 @@ def write_part_zero(doc):
         ("2b", "תקשורת — ריבוי לקוחות",
          "מימוש שרת מרובה לקוחות",
          "✅",
-         "ChessServer._accept_loop יוצר Thread לכל חיבור. "
-         "מאומת ב-tests/integration/test_parallel_games.py"),
+         "ChessServer._accept_loop יוצר Thread לכל חיבור."),
 
         ("2c", "תקשורת — פרוטוקול",
          'פרוטוקול העברת הודעות מצד לצד הגיוני ע"י התלמיד',
@@ -531,12 +530,12 @@ def write_part_b(doc):
     ])
     he_paragraph(doc, "ניקוד ארכיטקטורה: ___ / 25%", bold=True, color=ACCENT)
 
-    heading(doc, "4. מימוש הפרויקט (הקוד, בדיקות) — 31%", level=2)
+    heading(doc, "4. מימוש הפרויקט (הקוד) — 31%", level=2)
     add_table(doc, ["תת-סעיף", "סטטוס", "מיקום / הערות"], [
         ("תכנות מונחה עצמים — מחלקות שהתלמיד יצר", "✅",
          "21 מחלקות אפליקטיביות + 13 שגיאה (ראה דרישת חובה #1)"),
         ("חלוקה הגיונית לקבצים", "✅",
-         "common/ + server/ + client/ + tests/{unit,integration}/"),
+         "common/ + server/ + client/"),
         ("קוד כתוב היטב", "✅",
          "type hints מלאים, PEP-8, שמות משמעותיים"),
         ("תיעוד הגיוני", "✅",
@@ -548,8 +547,6 @@ def write_part_b(doc):
         ("קוד בטוח — try/except, שרת יציב לא קורס", "✅",
          "Session.run עוטף כל dispatch ב-except SecureChessError/Exception בשלוש שכבות; "
          "ניתוק לקוח מטופל ב-_on_disconnect"),
-        ("הבדיקות — טבלה מעודכנת עם תוצאות", "✅",
-         "99 טסטים עוברים (87 unit + 12 integration). ראה מימוש §4.4 ונספח ב'"),
     ])
     he_paragraph(doc, "ניקוד מימוש: ___ / 31%", bold=True, color=ACCENT)
 
@@ -581,9 +578,8 @@ def write_part_b(doc):
     heading(doc, "8. נספחים", level=2)
     add_table(doc, ["תת-סעיף", "סטטוס", "מיקום / הערות"], [
         ("תדפיס הקוד עם תיעוד", "✅", "נספח א' — תדפיס כל מודולי src/secure_chess/"),
-        ("תדפיס תוצאות הבדיקות", "✅", "נספח ב' — פלט pytest -v (99 passed)"),
-        ("טבלת הודעות הפרוטוקול", "✅", "נספח ג' — 13 סוגי הודעות + דוגמת זרימה"),
-        ("שאלות תיאורטיות לבחינה", "✅", "נספח ד' — תקשורת, קריפטו, OS, קבצים, סייבר"),
+        ("טבלת הודעות הפרוטוקול", "✅", "נספח ב' — 13 סוגי הודעות + דוגמת זרימה"),
+        ("שאלות תיאורטיות לבחינה", "✅", "נספח ג' — תקשורת, קריפטו, OS, קבצים, סייבר"),
     ])
 
     heading(doc, "בונוס — עד 10%", level=2)
@@ -592,7 +588,7 @@ def write_part_b(doc):
          "✅ רשת + ריבוי שחקנים + AI alpha-beta + חוקי שחמט מלאים",
          "___"),
         ("קוד בהיקף רציני",
-         "✅ ~3,000 שורות מקור + 99 טסטים אוטומטיים",
+         "✅ ~3,000 שורות מקור אפליקטיבי",
          "___"),
         ("חריג ביחס לפרויקטים בקבוצה",
          "✅ State machine מלאה, GUI Tkinter, atomic-write persistence, AI minimax",
@@ -646,12 +642,10 @@ def write_oral_rubric(doc):
 def write_examiner_notes(doc):
     heading(doc, "הערות לבוחן — איך להריץ את הפרויקט", level=1)
     he_bullet(doc, "קוד מקור: src/secure_chess/ (Python 3.11+, 16 מודולים)")
-    he_bullet(doc, "בדיקות: tests/ (99 טסטים, רצים ב-~12 שניות עם pytest -v)")
-    he_bullet(doc, "תיעוד נלווה: README.md (כיסוי דרישות + מדריך התקנה)")
-    he_bullet(doc, "תלויות: pyproject.toml (bcrypt>=4.1, pytest>=8.0)")
-    he_bullet(doc, "הוכחת ריבוי שחקנים: pytest tests/integration/test_parallel_games.py -v")
-    he_bullet(doc, "הוכחת AI (bonus): pytest tests/integration/test_play_ai.py -v")
-    he_bullet(doc, "הוכחת אטומיות אחסון: pytest tests/unit/test_user_store.py -v")
+    he_bullet(doc, "תלויות: pyproject.toml (bcrypt>=4.1)")
+    he_bullet(doc, "הוכחת ריבוי שחקנים: הפעלת שרת + שני לקוחות מקבילים שמשחקים זה נגד זה")
+    he_bullet(doc, "הוכחת AI (bonus): לקוח אחד בוחר 'Start AI Game' מה-Lobby")
+    he_bullet(doc, "הוכחת אטומיות אחסון: התבוננות ב-data/users.json אחרי register; אין plaintext")
 
     heading(doc, "סטטוס ההפקה", level=1)
     he_paragraph(doc,
@@ -665,14 +659,13 @@ def write_examiner_notes(doc):
     he_bullet(doc, "פרק 1 — מבוא: רעיון, מוטיבציה, ייזום, 9 דרישות פונקציונליות, 6 לא-פונקציונליות, לו\"ז, 6 סיכונים")
     he_bullet(doc, "פרק 2 — ניתוח: חוקי שחמט, מודל OSI, hash+bcrypt, threading + locks, atomic writes")
     he_bullet(doc, "פרק 3 — ארכיטקטורה: תרשים בלוקים, 3 sequence diagrams, 16 מודולים, ניתוח 4 אלגוריתמים, state machine, מודל איומים תואם הנחיית המורה")
-    he_bullet(doc, "פרק 4 — מימוש: 21 מחלקות אפליקטיביות, מבנה תיקיות, דפוס robustness 3 שכבות, טבלת 16 בדיקות")
+    he_bullet(doc, "פרק 4 — מימוש: 21 מחלקות אפליקטיביות, מבנה תיקיות, דפוס robustness 3 שכבות")
     he_bullet(doc, "פרק 5 — מדריך משתמש: התקנה, הרצה, הנחיות ל-3 סוגי משתמשים, הוכחת bcrypt")
     he_bullet(doc, "פרק 6 — סיכום אישי: 10 לקחים מקצועיים + 6 דברים שהייתי משנה")
     he_bullet(doc, "פרק 7 — ביבליוגרפיה: 8 מקורות עם הסבר תרומה (סקר ספרות אמיתי)")
     he_bullet(doc, "נספח א' — תדפיס מלא של כל קוד המקור")
-    he_bullet(doc, "נספח ב' — פלט pytest -v (99 בדיקות עוברות)")
-    he_bullet(doc, "נספח ג' — טבלת הודעות הפרוטוקול המלאה (13 סוגים)")
-    he_bullet(doc, "נספח ד' — שאלות תיאורטיות לבחינה עם תשובות מוכנות")
+    he_bullet(doc, "נספח ב' — טבלת הודעות הפרוטוקול המלאה (13 סוגים)")
+    he_bullet(doc, "נספח ג' — שאלות תיאורטיות לבחינה עם תשובות מוכנות")
 
     heading(doc, "מה נשאר על התלמיד (ידני)", level=2)
     warn_box(doc,

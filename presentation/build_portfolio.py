@@ -465,7 +465,7 @@ def build_document() -> None:
     write_architecture(doc)
     page_break(doc)
 
-    heading(doc, "4. מימוש הפרויקט — הקוד והבדיקות", level=1)
+    heading(doc, "4. מימוש הפרויקט — הקוד", level=1)
     write_implementation(doc)
     page_break(doc)
 
@@ -485,15 +485,11 @@ def build_document() -> None:
     write_source_appendix(doc)
     page_break(doc)
 
-    heading(doc, "נספח ב' — תוצאות הרצת בדיקות (pytest)", level=1)
-    write_tests_appendix(doc)
-    page_break(doc)
-
-    heading(doc, "נספח ג' — טבלת הודעות הפרוטוקול המלאה", level=1)
+    heading(doc, "נספח ב' — טבלת הודעות הפרוטוקול המלאה", level=1)
     write_protocol_appendix(doc)
     page_break(doc)
 
-    heading(doc, "נספח ד' — שאלות תיאורטיות אפשריות לבחינה", level=1)
+    heading(doc, "נספח ג' — שאלות תיאורטיות אפשריות לבחינה", level=1)
     write_qa_appendix(doc)
 
     doc.save(str(OUT_DOCX))
@@ -634,9 +630,9 @@ def write_intro(doc):
 
     heading(doc, "1.5 לוח זמנים — אבני דרך", level=2)
     add_table(doc, ["שלב", "תוצר", "מצב"], [
-        ("US1 — אימות", "register / login עם bcrypt + UserStore + 9 unit tests", "✅ הושלם"),
+        ("US1 — אימות", "register / login עם bcrypt + UserStore", "✅ הושלם"),
         ("US2 — משחק אדם-אדם", "Board (חוקי שחמט מלאים) + Game + Session + Lobby + מהלך מלא", "✅ הושלם"),
-        ("US3 — ריבוי משחקים", "Thread-per-connection + GameRegistry + isolation tests", "✅ הושלם (בונוס)"),
+        ("US3 — ריבוי משחקים", "Thread-per-connection + GameRegistry", "✅ הושלם (בונוס)"),
         ("US4 — AI", "AIPlayer (alpha-beta minimax) + handle_play_ai", "✅ הושלם (בונוס)"),
         ("US5 — GUI", "Tkinter 3-screen client (Login / Lobby / Game)", "✅ הושלם"),
         ("US6 — תיק פרויקט", "מסמך פורמלי + מחוון + תדפיסים", "✅ הושלם"),
@@ -987,7 +983,7 @@ def write_architecture(doc):
     add_table(doc, ["איום", "רובד", "סיכון", "מיטיגציה בפרויקט"], [
         ("דליפת users.json", "אחסון",
          "מאזין רואה סיסמאות",
-         "bcrypt + salt; לעולם אין plaintext על הדיסק. מאומת ב-tests/integration/test_register_login.py"),
+         "bcrypt + salt; לעולם אין plaintext על הדיסק."),
         ("Brute-force online", "אפליקציה",
          "ניחוש סיסמאות דרך login",
          "bcrypt עם cost=12 מאט כל ניחוש ל-~0.3s. סיסמה ≥ 8 תווים. עתידית: rate-limiter פר-IP."),
@@ -1052,35 +1048,29 @@ def write_implementation(doc):
     code_block(doc, [
         "secure-chess/",
         "├── pyproject.toml          # תלויות + מטא-דאטה",
-        "├── pytest.ini              # קונפיג בדיקות",
-        "├── README.md               # תיעוד מפעיל",
         "├── data/                   # users.json + server.log",
-        "├── src/secure_chess/",
-        "│   ├── __init__.py",
-        "│   ├── common/             # לוגיקה טהורה ללא I/O",
-        "│   │   ├── pieces.py       # Color, PieceType, Piece + pseudo-legal moves",
-        "│   │   ├── board.py        # Board, legality, check/mate/draws, FEN",
-        "│   │   ├── move.py         # Move dataclass + UCI parsing",
-        "│   │   ├── game.py         # Game + Result",
-        "│   │   ├── ai.py           # alpha-beta minimax (BONUS)",
-        "│   │   ├── crypto.py       # bcrypt wrappers",
-        "│   │   ├── user_store.py   # Account + JSON-backed UserStore",
-        "│   │   ├── protocol.py     # JSON-Lines framing",
-        "│   │   ├── errors.py       # exception hierarchy",
-        "│   │   └── log.py          # stderr logger",
-        "│   ├── server/             # TCP socket + threading",
-        "│   │   ├── __main__.py     # python -m secure_chess.server",
-        "│   │   ├── server.py       # ChessServer + accept loop",
-        "│   │   ├── session.py      # Session, SessionState, AISession",
-        "│   │   └── lobby.py        # Lobby + GameRegistry",
-        "│   └── client/             # שתי חזיתות GUI / CLI",
-        "│       ├── __main__.py     # python -m secure_chess.client (GUI default; --cli)",
-        "│       ├── gui.py          # Tkinter desktop GUI",
-        "│       └── cli.py          # text-mode REPL",
-        "└── tests/",
-        "    ├── conftest.py",
-        "    ├── unit/                  # 90 unit tests",
-        "    └── integration/           # 12 integration tests (real sockets)",
+        "└── src/secure_chess/",
+        "    ├── __init__.py",
+        "    ├── common/             # לוגיקה טהורה ללא I/O",
+        "    │   ├── pieces.py       # Color, PieceType, Piece + pseudo-legal moves",
+        "    │   ├── board.py        # Board, legality, check/mate/draws, FEN",
+        "    │   ├── move.py         # Move dataclass + UCI parsing",
+        "    │   ├── game.py         # Game + Result",
+        "    │   ├── ai.py           # alpha-beta minimax (BONUS)",
+        "    │   ├── crypto.py       # bcrypt wrappers",
+        "    │   ├── user_store.py   # Account + JSON-backed UserStore",
+        "    │   ├── protocol.py     # JSON-Lines framing",
+        "    │   ├── errors.py       # exception hierarchy",
+        "    │   └── log.py          # stderr logger",
+        "    ├── server/             # TCP socket + threading",
+        "    │   ├── __main__.py     # python -m secure_chess.server",
+        "    │   ├── server.py       # ChessServer + accept loop",
+        "    │   ├── session.py      # Session, SessionState, AISession",
+        "    │   └── lobby.py        # Lobby + GameRegistry",
+        "    └── client/             # שתי חזיתות GUI / CLI",
+        "        ├── __main__.py     # python -m secure_chess.client (GUI default; --cli)",
+        "        ├── gui.py          # Tkinter desktop GUI",
+        "        └── cli.py          # text-mode REPL",
     ])
 
     heading(doc, "4.3 קוד בטוח — try/except ו-robustness", level=2)
@@ -1122,49 +1112,6 @@ def write_implementation(doc):
     he_bullet(doc, "שכבה 2 (dispatch) — לוכדת כל SecureChessError (illegal_move, not_your_turn, weak_password, …) וכל Exception כללי. השרת לעולם לא קורס בגלל הודעת לקוח.")
     he_bullet(doc, "שכבה 3 (cleanup) — try/finally מבטיח שהסוקט ייסגר, השחקן יוסר מה-lobby, וה-active_logins ינוקה, גם אם זרקנו פנימית.")
 
-    heading(doc, "4.4 הבדיקות — מבנה הסוויטה", level=2)
-    he_paragraph(doc, "הסוויטה מחולקת ל-Unit Tests ו-Integration Tests:")
-    add_table(doc, ["קובץ", "כמות", "מטרה"], [
-        ("tests/unit/test_pieces.py", "9", "תנועות pseudo-legal לכל סוג כלי (Knight, Bishop, …)"),
-        ("tests/unit/test_board_rules.py", "15", "check, mate, stalemate, castling, en passant, FEN"),
-        ("tests/unit/test_ai.py", "11", "AIPlayer: בחירה חוקית, mate-in-1, evaluation, alpha-beta"),
-        ("tests/unit/test_crypto.py", "6", "bcrypt: hash/verify, salt-uniqueness, edge cases"),
-        ("tests/unit/test_user_store.py", "9", "register, authenticate, duplicate, persistence, weak password"),
-        ("tests/unit/test_protocol_auth.py", "7", "JSON-Lines + register/login dispatch (mocked socket)"),
-        ("tests/unit/test_protocol_game.py", "8", "move dispatch + state machine transitions"),
-        ("tests/unit/test_client_gui.py", "22", "Tkinter helpers + ChessGui state machine + FEN renderer"),
-        ("tests/integration/test_register_login.py", "3", "שרת חי + סוקטים אמיתיים → register → login"),
-        ("tests/integration/test_full_game.py", "3", "משחק שלם מקצה-לקצה: 2 לקוחות → mate / resign / disconnect"),
-        ("tests/integration/test_cancel_lobby.py", "3", "ביטול lobby, חזרה ל-AUTHENTICATED, ולא מתחבר עם משחק רוח"),
-        ("tests/integration/test_parallel_games.py", "2", "BONUS: 2 משחקים מקבילים מבודדים זה מזה"),
-        ("tests/integration/test_play_ai.py", "1", "BONUS: AI מבצע מהלך תקף בתגובה ל-play_ai"),
-    ])
-    callout(doc, [
-        ("סה\"כ: ", "bold"),
-        ("99 בדיקות (87 unit + 12 integration). כל הריצה לוקחת כ-12 שניות. ", "he"),
-        ("Coverage כולל את כל ה-handlers וה-game logic ראשי.", "muted"),
-    ])
-
-    heading(doc, "4.5 טבלת תוצאות בדיקות — קלט/פלט מצופה ומקבל", level=2)
-    add_table(doc, ["#", "תיאור הבדיקה", "קלט", "פלט מצופה", "פלט בפועל"], [
-        ("T1", "Register עם סיסמה חזקה", "username='alice', password='hunter2!'", "ok + account נוצר", "✅ עובר"),
-        ("T2", "Register עם סיסמה קצרה מדי", "password='abc' (3 תווים)", "error: weak_password", "✅ עובר"),
-        ("T3", "Register כפול עם אותו שם", "register 'alice' פעמיים", "error: duplicate_user", "✅ עובר"),
-        ("T4", "Login עם פרטים נכונים", "login 'alice' / 'hunter2!'", "ok", "✅ עובר"),
-        ("T5", "Login עם סיסמה שגויה", "login 'alice' / 'WRONG'", "error: auth_failed", "✅ עובר"),
-        ("T6", "Hash בקובץ אינו plaintext", "Get-Content data/users.json", "$2b$… (לא 'hunter2!')", "✅ עובר"),
-        ("T7", "Move e2e4 בלוח הפותח", "move 'e2e4'", "ok + game_state מעודכן", "✅ עובר"),
-        ("T8", "Move לא חוקי", "move 'e2e5' (חייל לא קופץ 3)", "error: illegal_move", "✅ עובר"),
-        ("T9", "Checkmate סופי", "Fool's mate (4 מהלכים)", "game_ended: black_wins/checkmate", "✅ עובר"),
-        ("T10", "Resignation", "resign אחרי 3 מהלכים", "game_ended: opp_wins/resignation", "✅ עובר"),
-        ("T11", "Disconnect", "סגירת socket באמצע משחק", "היריב מקבל game_ended/disconnect", "✅ עובר"),
-        ("T12", "2 משחקים מקבילים מבודדים", "4 לקוחות, 2 lobbies", "2 game_ids שונים", "✅ עובר"),
-        ("T13", "AI מבצע מהלך תקף", "play_ai → board ריק חוץ ממלך", "AI חושב ומחזיר legal move", "✅ עובר"),
-        ("T14", "Castling קצרה", "O-O עם תנאים מתקיימים", "מלך וצריח זזים", "✅ עובר"),
-        ("T15", "En passant", "חייל לבן d5, שחור עושה e7e5", "d5 יכול לקחת e6 enpassant", "✅ עובר"),
-        ("T16", "Promotion", "חייל לבן a7→a8q", "מלכה לבנה ב-a8", "✅ עובר"),
-    ])
-
 
 def write_user_guide(doc):
     heading(doc, "5.1 התקנה והרצה", level=2)
@@ -1197,12 +1144,6 @@ def write_user_guide(doc):
     heading(doc, "5.1.3 הרצת לקוח CLI (ללא תצוגה גרפית)", level=3)
     code_block(doc, [
         "python -m secure_chess.client --host 127.0.0.1 --port 5050 --cli",
-    ])
-
-    heading(doc, "5.1.4 הרצת הבדיקות", level=3)
-    code_block(doc, [
-        "pytest -v",
-        "# צפוי: 99 passed in ~12s",
     ])
 
     heading(doc, "5.2 צילומי מסך של הזרימה", level=2)
@@ -1289,7 +1230,6 @@ def write_reflection(doc):
     he_bullet(doc, "Pseudo-legal vs legal moves בשחמט: המפריד הוא מי בודק את ה-check filter. המידול הזה חסך לי הרבה duplication.")
     he_bullet(doc, "Alpha-beta pruning והקסם של negamax (משלב min ו-max בפונקציה אחת ע\"י נסיעה על נקודת המבט).")
     he_bullet(doc, "Atomic file writes — tempfile + os.fsync + os.replace הם השילוש הקדוש לקובץ קונפיג שלא יכול להיות 'חצי כתוב'.")
-    he_bullet(doc, "TDD: כשכתבתי טסטים לפני כל פיצ'ר, מצאתי באגים שלא היו מתגלים אחרת. במיוחד בלוגיקת castling ו-threefold repetition.")
     he_bullet(doc, "PEP-8, type hints, ו-module docstrings — תרומה גדולה לקריאות הקוד גם 3 חודשים אחרי שכתבתי.")
 
     heading(doc, "6.3 מה הייתי משנה אם הייתי מתחיל מחדש", level=2)
@@ -1395,36 +1335,6 @@ def write_source_appendix(doc):
         if not lines:
             lines = ["# (קובץ ריק)"]
         code_block(doc, lines)
-
-
-def write_tests_appendix(doc):
-    he_paragraph(doc,
-                 'הפלט להלן הופק ע"י הרצת "pytest -v" על המאגר. כל 99 הבדיקות '
-                 "עוברות בכ-12 שניות.")
-    code_block(doc, [
-        "============================= test session starts =============================",
-        "platform win32 -- Python 3.12.0, pytest-9.0.3, pluggy-1.6.0",
-        "rootdir: C:\\Users\\Alonti\\Documents\\GitHub\\secure-chess",
-        "configfile: pytest.ini",
-        "testpaths: tests",
-        "collected 99 items",
-        "",
-        "tests\\integration\\test_cancel_lobby.py ...                               [  3%]",
-        "tests\\integration\\test_full_game.py ...                                  [  6%]",
-        "tests\\integration\\test_parallel_games.py ..                              [  8%]",
-        "tests\\integration\\test_play_ai.py .                                      [  9%]",
-        "tests\\integration\\test_register_login.py ...                             [ 12%]",
-        "tests\\unit\\test_ai.py ...........                                        [ 23%]",
-        "tests\\unit\\test_board_rules.py ...............                           [ 38%]",
-        "tests\\unit\\test_client_gui.py ......................                     [ 60%]",
-        "tests\\unit\\test_crypto.py ......                                         [ 66%]",
-        "tests\\unit\\test_pieces.py .........                                      [ 75%]",
-        "tests\\unit\\test_protocol_auth.py .......                                 [ 82%]",
-        "tests\\unit\\test_protocol_game.py ........                                [ 90%]",
-        "tests\\unit\\test_user_store.py .........                                  [100%]",
-        "",
-        "============================= 99 passed in 12.20s =============================",
-    ])
 
 
 def write_protocol_appendix(doc):
