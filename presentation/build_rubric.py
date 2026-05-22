@@ -357,24 +357,8 @@ def build_document() -> None:
     print(f"wrote rubric docx ({OUT_DOCX.stat().st_size:,} bytes)")
 
 
-def _word_postprocess_rtl(docx_path: Path) -> None:
-    try:
-        import win32com.client
-    except ImportError:
-        return
-    word = win32com.client.Dispatch("Word.Application")
-    word.Visible = False
-    try:
-        doc = word.Documents.Open(str(docx_path))
-        for para in doc.Paragraphs:
-            try:
-                para.Format.ReadingOrder = 0
-            except Exception:
-                pass
-        doc.Save()
-        doc.Close(SaveChanges=False)
-    finally:
-        word.Quit()
+def _word_postprocess_rtl(_docx_path: Path) -> None:
+    return
 
 
 def write_cover(doc):
