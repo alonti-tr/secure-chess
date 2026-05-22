@@ -508,7 +508,7 @@ def _word_postprocess_rtl(docx_path: Path) -> None:
         doc = word.Documents.Open(str(docx_path))
         for para in doc.Paragraphs:
             try:
-                para.Format.ReadingOrder = 1
+                para.Format.ReadingOrder = 0
             except Exception:
                 pass
         doc.Save()
