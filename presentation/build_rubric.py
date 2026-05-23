@@ -357,8 +357,42 @@ def build_document() -> None:
     print(f"wrote rubric docx ({OUT_DOCX.stat().st_size:,} bytes)")
 
 
-def _word_postprocess_rtl(_docx_path: Path) -> None:
-    return
+def _word_postprocess_rtl(docx_path: Path) -> None:
+    try:
+        import win32com.client
+        import pythoncom
+    except ImportError:
+        return
+
+    pythoncom.CoInitialize()
+    word = None
+    try:
+        word = win32com.client.Dispatch("Word.Application")
+        word.Visible = False
+        word.DisplayAlerts = 0
+        wdocx = word.Documents.Open(str(docx_path.resolve()), ReadOnly=False)
+        try:
+            for para in wdocx.Paragraphs:
+                style_name = ""
+                try:
+                    style_name = para.Style.NameLocal or ""
+                except Exception:
+                    style_name = ""
+                if "heading" in style_name.lower() or "כותרת" in style_name:
+                    try:
+                        para.Format.ReadingOrder = 1
+                    except Exception:
+                        pass
+            wdocx.Save()
+        finally:
+            wdocx.Close(SaveChanges=False)
+    finally:
+        if word is not None:
+            try:
+                word.Quit()
+            except Exception:
+                pass
+        pythoncom.CoUninitialize()
 
 
 def write_cover(doc):
