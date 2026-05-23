@@ -512,6 +512,12 @@ def _word_postprocess_rtl(docx_path: Path) -> None:
         word.DisplayAlerts = 0
         wdocx = word.Documents.Open(str(docx_path.resolve()), ReadOnly=False)
         try:
+            try:
+                for toc in wdocx.TablesOfContents:
+                    toc.Update()
+            except Exception:
+                pass
+
             for para in wdocx.Paragraphs:
                 try:
                     current_align = para.Format.Alignment
