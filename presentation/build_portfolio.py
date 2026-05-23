@@ -513,14 +513,27 @@ def _word_postprocess_rtl(docx_path: Path) -> None:
         wdocx = word.Documents.Open(str(docx_path.resolve()), ReadOnly=False)
         try:
             for para in wdocx.Paragraphs:
-                style_name = ""
                 try:
-                    style_name = para.Style.NameLocal or ""
+                    current_align = para.Format.Alignment
                 except Exception:
-                    style_name = ""
-                if "heading" in style_name.lower() or "כותרת" in style_name:
+                    current_align = None
+                if current_align == 1:
+                    continue
+                font_name = ""
+                try:
+                    font_name = (para.Range.Font.Name or "") + " " + \
+                                (para.Range.Font.NameAscii or "")
+                except Exception:
+                    font_name = ""
+                if "Consolas" in font_name or "Courier" in font_name:
+                    continue
+                try:
+                    para.Format.ReadingOrder = 1
+                except Exception:
+                    pass
+                if current_align in (0, None):
                     try:
-                        para.Format.ReadingOrder = 1
+                        para.Format.Alignment = 2
                     except Exception:
                         pass
             wdocx.Save()
